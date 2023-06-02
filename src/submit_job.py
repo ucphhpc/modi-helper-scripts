@@ -61,7 +61,7 @@ def main(job_file, runtime_directory, scratch_space_directory):
         )
         exit(-2)
 
-    job_output = run_job(job_file, runtime_directory)
+    job_output = run_job(runtime_directory, job_file)
     if job_output["returncode"] != "0":
         print("Failed to execute the job: {} - {}".format(job_file, job_output))
         exit(-2)
