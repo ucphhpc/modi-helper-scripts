@@ -7,7 +7,7 @@ from environment.create import (
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.option(
+@click.argument(
     "name",
     required=True,
     help="Name of the new environment",
