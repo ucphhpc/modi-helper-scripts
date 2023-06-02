@@ -11,5 +11,5 @@ def initialize_conda():
         )
 
     # Source the conda script into the current shell
-    command = ["conda", "init"]
+    command = ["conda", "init", "-q", "--all"]
     return True, run(command, format_output_str=True)
