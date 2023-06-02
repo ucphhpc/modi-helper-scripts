@@ -49,7 +49,6 @@ def main(name, destination_dir, automatic_proceed, activate):
         if not activated:
             print("Failed to activate environment: {} - {}".format(name, activated))
             exit(-4)
-    exit(0)
 
 
 if __name__ == "__main__":
