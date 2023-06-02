@@ -8,10 +8,7 @@ from environment.create import (
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
-@click.argument(
-    "name",
-    help="Name of the new environment",
-)
+@click.argument("name", type=click.STRING)
 @click.option(
     "--destination",
     "-d",
