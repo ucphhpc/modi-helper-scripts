@@ -10,21 +10,22 @@ from environment.create import (
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
 @click.argument("name", type=click.STRING)
 @click.option(
-    "--destination",
-    "-d",
+    "--destination-dir",
+    "-dd",
     default=os.path.join("~", "modi_mount", "my_conda_environments"),
     show_default=True,
+    help="The directory in which the environment will be created",
 )
 @click.option("--activate", "-a", is_flag=True, default=True, show_default=True)
-def main(name, destination, activate):
-    if not exists(destination):
-        created, msg = makedirs(destination)
+def main(name, destination_dir, activate):
+    if not exists(destination_dir):
+        created, msg = makedirs(destination_dir)
         if not created:
             print(msg)
             exit(-1)
 
-    created = create_environment(name, destination=destination)
-    if not created["success"]:
+    created = create_environment(name, destination=destination_dir)
+    if created["returncode"] != "0":
         print("Failed to create environment: {} - {}".format(name, created))
         exit(-1)
 
