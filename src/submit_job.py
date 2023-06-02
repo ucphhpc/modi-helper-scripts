@@ -5,33 +5,49 @@ from job.run import run_job
 from utils.io import exists, expanduser
 
 
-@click.command(context_settings=dict(help_option_names=["-h", "--help"]))
+@click.command(
+    "cli",
+    context_settings=dict(
+        help_option_names=["-h", "--help"],
+        show_default=True)
+)
 @click.argument("job-file")
 @click.option(
     "--runtime-directory",
     "-rd",
     default=os.path.join("~", "modi_mount"),
-    help="""
-    The path to the runtime directory in which the job is to be executed.
-    This directory must be within the scratch space directory.
-    """,
+    help="""The path to the runtime directory in which the job is to be executed.
+    This directory must be within the scratch space directory.""",
 )
 @click.option(
     "--scratch-space-directory",
     "-ssd",
     default=os.path.join("~", "modi_mount"),
+    help="""The path to the scratch space directory.""",
+)
+@click.option(
+    "--job-args",
+    "-ja",
+    multiple=True,
     help="""
-    The path to the scratch space directory.
+    The list of arguments that should be passed to the `job-file`.
     """,
 )
-def main(job_file, runtime_directory, scratch_space_directory):
+@click.option(
+    "--job-kwargs",
+    "-jk",
+    help="""
+    The key-value pair arguments that should be passed to the `job-file`.
+    """,
+)
+def main(job_file, runtime_directory, scratch_space_directory, job_args, job_kwargs):
     job_file = expanduser(job_file)
     runtime_directory = expanduser(runtime_directory)
     scratch_space_directory = expanduser(scratch_space_directory)
 
     if not exists(job_file):
         print(
-            "Failed to find the job-file: {} - are you sure it exists?".format(job_file)
+            "Failed to find the job-file:'{}' are you sure it exists?".format(job_file)
         )
         exit(-1)
 
@@ -61,7 +77,7 @@ def main(job_file, runtime_directory, scratch_space_directory):
         )
         exit(-2)
 
-    job_output = run_job(runtime_directory, job_file)
+    job_output = run_job(runtime_directory, job_file, *job_args, **job_kwargs)
     if job_output["returncode"] != "0":
         print("Failed to execute the job: {} - {}".format(job_file, job_output))
         exit(-2)
