@@ -11,5 +11,5 @@ def initialize_conda():
         )
 
     # Source the conda script into the current shell
-    command = ["source", os.path.join(conda_dir, "etc", "profile.d", "conda.sh")]
-    return True, run(command, shell=True, format_output_str=True)
+    command = ["conda", "init"]
+    return True, run(command, format_output_str=True)

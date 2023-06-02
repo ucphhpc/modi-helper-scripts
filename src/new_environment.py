@@ -31,7 +31,7 @@ def main(name, destination_dir, automatic_proceed, activate):
             print(msg)
             exit(-1)
 
-    # Ensure that the shell is correctly configured
+    # Ensure that conda is initialized
     initialized, output = initialize_conda()
     if not initialized:
         print(output)
