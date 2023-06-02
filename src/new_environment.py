@@ -10,7 +10,6 @@ from environment.create import (
 @click.option(
     "--name",
     "-n",
-    default="",
     required=True,
     help="Name of the new environment",
 )
