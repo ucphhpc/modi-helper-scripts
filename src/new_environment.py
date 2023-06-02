@@ -1,5 +1,6 @@
 import click
 import os
+from utils.io import exists, makedirs
 from environment.create import (
     create_environment,
     activate_environment,
@@ -19,6 +20,12 @@ from environment.create import (
 )
 @click.option("--activate", "-a", is_flag=True, default=True, show_default=True)
 def main(name, destination, activate):
+    if not exists(destination):
+        created, msg = makedirs(destination)
+        if not created:
+            print(msg)
+            exit(-1)
+
     created = create_environment(name, destination=destination)
     if not created["success"]:
         print("Failed to create environment: {} - {}".format(name, created))
