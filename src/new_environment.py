@@ -16,15 +16,23 @@ from environment.create import (
     show_default=True,
     help="The directory in which the environment will be created",
 )
+@click.option(
+    "--automatic-proceed",
+    "-ap",
+    default=True,
+    help="Whether the environment creation should automatically proceed without user input.",
+)
 @click.option("--activate", "-a", is_flag=True, default=True, show_default=True)
-def main(name, destination_dir, activate):
+def main(name, destination_dir, automatic_proceed, activate):
     if not exists(destination_dir):
         created, msg = makedirs(destination_dir)
         if not created:
             print(msg)
             exit(-1)
 
-    created = create_environment(name, destination=destination_dir)
+    created = create_environment(
+        name, destination=destination_dir, automatic_proceed=automatic_proceed
+    )
     if created["returncode"] != "0":
         print("Failed to create environment: {} - {}".format(name, created))
         exit(-1)
