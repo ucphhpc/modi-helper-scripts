@@ -1,6 +1,7 @@
 import click
 import os
 from utils.io import exists, makedirs
+from environment.initialize import initialize_conda
 from environment.create import (
     create_environment,
     activate_environment,
@@ -30,18 +31,24 @@ def main(name, destination_dir, automatic_proceed, activate):
             print(msg)
             exit(-1)
 
+    # Ensure that the shell is correctly configured
+    initialized, output = initialize_conda()
+    if not initialized:
+        print(output)
+        exit(-2)
+
     created = create_environment(
         name, destination=destination_dir, automatic_proceed=automatic_proceed
     )
     if created["returncode"] != "0":
         print("Failed to create environment: {} - {}".format(name, created))
-        exit(-1)
+        exit(-3)
 
     if activate:
         activated = activate_environment(name)
         if not activated:
             print("Failed to activate environment: {} - {}".format(name, activated))
-            exit(-2)
+            exit(-4)
     exit(0)
 
 
