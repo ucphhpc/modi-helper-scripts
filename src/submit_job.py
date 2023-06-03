@@ -33,7 +33,7 @@ from utils.io import exists, expanduser
     The list of arguments that should be passed to the `job-file`.
     """,
 )
-def main(runtime_directory, scratch_space_directory, job_args):
+def main(job_file, runtime_directory, scratch_space_directory, job_args):
     job_file = expanduser(job_file)
     runtime_directory = expanduser(runtime_directory)
     scratch_space_directory = expanduser(scratch_space_directory)
