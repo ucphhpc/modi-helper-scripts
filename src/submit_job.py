@@ -33,14 +33,7 @@ from utils.io import exists, expanduser
     The list of arguments that should be passed to the `job-file`.
     """,
 )
-@click.option(
-    "--job-kwargs",
-    "-jk",
-    help="""
-    The key-value pair arguments that should be passed to the `job-file`.
-    """,
-)
-def main(job_file, runtime_directory, scratch_space_directory, job_args, job_kwargs):
+def main(runtime_directory, scratch_space_directory, job_args):
     job_file = expanduser(job_file)
     runtime_directory = expanduser(runtime_directory)
     scratch_space_directory = expanduser(scratch_space_directory)
@@ -77,7 +70,7 @@ def main(job_file, runtime_directory, scratch_space_directory, job_args, job_kwa
         )
         exit(-2)
 
-    job_output = run_job(runtime_directory, job_file, *job_args, **job_kwargs)
+    job_output = run_job(runtime_directory, job_file, *job_args)
     if job_output["returncode"] != "0":
         print("Failed to execute the job: {} - {}".format(job_file, job_output))
         exit(-2)
