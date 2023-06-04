@@ -1,7 +1,6 @@
 import click
 import os
-from defaults import CONTAINER_WRAP, REGULAR
-from job.initialize import check_job_paths, write_job_script, make_job_script_content, get_template_file
+from job.initialize import check_job_paths, write_job_script
 from job.run import run_job
 from utils.io import exists, expanduser
 
@@ -53,7 +52,7 @@ from utils.io import exists, expanduser
 @click.option(
     "--container-wrap-image",
     "-cwi",
-    default=os.getenv("MODI_DEFAULT_IMAGE", None),
+    default=os.getenv("MODI_DEFAULT_IMAGE", None)
     help="""
     The container image to use when generating the job scripts.
     """
@@ -96,29 +95,12 @@ def main(job_file, job_args, runtime_directory, scratch_space_directory, generat
         exit(-2)
 
     if generate_job_scripts:
-        template_kwargs = {
-            "job-file": job_file
-        }
-        if generate_container_wrap:
-            template_file = get_template_file(CONTAINER_WRAP)
-            new_job_file_name = os.path.basename(job_file) + CONTAINER_WRAP
-            template_kwargs["container_wrap_image"] = container_wrap_image
-        else:
-            template_file = get_template_file(REGULAR)
-            new_job_file_name = os.path.basename(job_file) + REGULAR
-        
-        new_job_file_path = os.path.join(runtime_directory, new_job_file_name)
-        job_script_content = make_job_script_content(template_file, template_kwargs=template_kwargs)
-        wrote_job_script = write_job_script(new_job_file_path, job_script_content)
-        if not wrote_job_script:
-            print("Failed to write the generated job script: {}".format(new_job_file_name))
-            exit(-2)
-        job_output = run_job(runtime_directory, new_job_file_path)
-    else: 
-        job_output = run_job(runtime_directory, job_file, *job_args)
-        if job_output["returncode"] != "0":
-            print("Failed to execute the job: {} - {}".format(job_file, job_output))
-            exit(-2)
+        write_job_script(runtime_directory, job_file, generate_container_wrap=generate_container_wrap, container_wrap_image=container_wrap_image)
+
+    job_output = run_job(runtime_directory, job_file, *job_args)
+    if job_output["returncode"] != "0":
+        print("Failed to execute the job: {} - {}".format(job_file, job_output))
+        exit(-2)
 
 
 if __name__ == "__main__":
