@@ -111,11 +111,13 @@ def main(
         template_kwargs = {"job_file": job_file}
         if generate_container_wrap:
             template_file_name = CONTAINER_WRAP + ".j2"
-            new_job_file_name = os.path.basename(job_file) + CONTAINER_WRAP
+            new_job_file_name = os.path.join(
+                os.path.basename(job_file), ".", CONTAINER_WRAP
+            )
             template_kwargs["container_wrap_image"] = container_wrap_image
         else:
             template_file_name = REGULAR + ".j2"
-            new_job_file_name = os.path.basename(job_file) + REGULAR
+            new_job_file_name = os.path.join(os.path.basename(job_file), ".", REGULAR)
 
         new_job_file_path = os.path.join(runtime_directory, new_job_file_name)
         job_script_content = make_job_script_content(

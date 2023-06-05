@@ -55,7 +55,9 @@ class TestSubmitJob(unittest.TestCase):
             self.assertTrue(recursive_remove(self.test_scratch_space_directory))
 
     def test_submit_job(self):
-        self.assertTrue(write(self.hello_world_job_file, "#!/bin/bash\necho 'Hello World!'"))
+        self.assertTrue(
+            write(self.hello_world_job_file, "#!/bin/bash\necho 'Hello World!'")
+        )
         self.assertTrue(copy(self.hello_world_job_file, self.test_runtime_directory))
 
         runtime_job_file_path = os.path.join(
