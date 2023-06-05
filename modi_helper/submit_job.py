@@ -108,7 +108,7 @@ def main(
         exit(-2)
 
     if generate_job_scripts:
-        template_kwargs = {"job-file": job_file}
+        template_kwargs = {"job_file": job_file}
         if generate_container_wrap:
             template_file_name = CONTAINER_WRAP + ".j2"
             new_job_file_name = os.path.basename(job_file) + CONTAINER_WRAP
