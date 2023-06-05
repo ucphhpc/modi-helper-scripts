@@ -77,7 +77,11 @@ class TestSubmitJob(unittest.TestCase):
         assert result["output"] == "Hello World!\n"
 
     def test_submit_job_with_generate_job_scripts(self):
-        self.assertTrue(write(self.hello_world_python, "#!/usr/bin/env python3\nprint('Hello World!')"))
+        self.assertTrue(
+            write(
+                self.hello_world_python, "#!/usr/bin/env python3\nprint('Hello World!')"
+            )
+        )
         self.assertTrue(copy(self.hello_world_python, self.test_runtime_directory))
 
         runtime_job_file_path = os.path.join(

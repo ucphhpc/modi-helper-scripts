@@ -5,7 +5,6 @@ from modi_helper.job.initialize import (
     check_job_paths,
     write_job_script,
     make_job_script_content,
-    get_template_file,
 )
 from modi_helper.job.run import run_job
 from modi_helper.utils.io import exists, expanduser
@@ -111,7 +110,9 @@ def main(
         template_kwargs = {"job_file": job_file}
         if generate_container_wrap:
             template_file_name = CONTAINER_WRAP + ".j2"
-            new_job_file_name = "{}.{}".format(os.path.basename(job_file), CONTAINER_WRAP)
+            new_job_file_name = "{}.{}".format(
+                os.path.basename(job_file), CONTAINER_WRAP
+            )
             template_kwargs["container_wrap_image"] = container_wrap_image
         else:
             template_file_name = REGULAR + ".j2"
