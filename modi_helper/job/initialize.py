@@ -1,5 +1,5 @@
 import os
-from jinja2 import Environment, PackageLoader
+from jinja2 import Environment, PackageLoader, select_autoescape
 import importlib.resources as pkg_resources
 from modi_helper.utils.io import expanduser, write
 
@@ -31,7 +31,7 @@ def make_job_script_content(template_file, template_kwargs=None):
         return False
 
     env = Environment(
-        loader=PackageLoader("modi-helper")
+        loader=PackageLoader("modi_helper"), autoescape=select_autoescape()
     )
     template = env.get_template(template_file)
     new_content = template.render(
