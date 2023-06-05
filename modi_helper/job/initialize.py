@@ -1,7 +1,7 @@
 import os
-from jinja2 import Template, Environment
+from jinja2 import Environment, PackageLoader
 import importlib.resources as pkg_resources
-from utils.io import expanduser, write
+from modi_helper.utils.io import expanduser, write
 
 
 def check_job_paths(runtime_directory, job_file):
@@ -22,16 +22,21 @@ def get_template_file(template_type):
     """Get the template file from the src/templates directory."""
     return pkg_resources.files("templates").joinpath("{}.j2".format(template_type))
 
+
 def make_job_script_content(template_file, template_kwargs=None):
     """Generate the job sripts based on the given template and its associated kwargs."""
     if not template_kwargs:
         return False
 
-    # Make the wrapper script.
-    templateLoader = Template.FileSystemLoader()
+    env = Environment(
+        loader=PackageLoader("modi-helper-scripts"),
+    )
     templateEnv = Environment(loader=templateLoader)
     template = templateEnv.get_template(template_file)
-    new_content = template.render(**template_kwargs)  # this is where to put args to the template renderer
+
+    new_content = template.render(
+        **template_kwargs
+    )  # this is where to put args to the template renderer
     return new_content
 
 
@@ -40,6 +45,6 @@ def write_job_script(runtime_directory, name, content):
     Generate the set of job scripts that are required to execute
     a given binary/program.
     """
-    
+
     job_script_path = os.path.join(runtime_directory, name)
     return write(job_script_path, content, mode="w", mkdirs=True)

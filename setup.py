@@ -21,7 +21,7 @@ with open(os.path.join(cur_dir, "version.py")) as f:
 
 long_description = open("README.rst").read()
 setup(
-    name="modi-helper-scripts",
+    name="modi-helper",
     version=version_ns["__version__"],
     description="A set of scripts and tools to help configure a MODI environment.",
     long_description=long_description,
@@ -34,7 +34,12 @@ setup(
     extras_require={
         "dev": read_req("requirements-dev.txt"),
     },
-    entry_points={"console_scripts": ["environment = corc.cli.cli:run"]},
+    entry_points={
+        "console_scripts": [
+            "modi-new-job=modi_helper.submit_job:main",
+            "modi-new-environment=modi_helper.new_environment:main",
+        ]
+    },
     classifiers=[
         "Intended Audience :: Developers",
         "Intended Audience :: System Administrators",

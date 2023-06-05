@@ -1,8 +1,8 @@
 import click
 import os
-from utils.io import exists, makedirs
-from environment.initialize import initialize_conda
-from environment.create import (
+from modi_helper.utils.io import exists, makedirs
+from modi_helper.environment.initialize import initialize_conda
+from modi_helper.environment.create import (
     create_environment,
     activate_environment,
 )

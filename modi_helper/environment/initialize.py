@@ -1,5 +1,5 @@
 import os
-from utils.job import run
+from modi_helper.utils.job import run
 
 
 def initialize_conda():

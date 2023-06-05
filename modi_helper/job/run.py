@@ -1,4 +1,4 @@
-from utils.job import run
+from modi_helper.utils.job import run
 
 
 def run_job(runtime_directory, job_file, *args, **kwargs):
