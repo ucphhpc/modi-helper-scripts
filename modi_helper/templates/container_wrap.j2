@@ -1,2 +1,2 @@
 #!/bin/bash
-srun apptainer exec {{ apptainer_image }} {{ job_file }}
+srun apptainer exec {{ container_wrap_image }} {{ job_file }}
