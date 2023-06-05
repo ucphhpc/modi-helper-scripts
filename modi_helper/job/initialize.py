@@ -25,7 +25,7 @@ def get_template_file(template_type):
     )
 
 
-def make_job_script_content(template_file, template_kwargs=None):
+def make_job_script_content(template_name, template_kwargs=None):
     """Generate the job sripts based on the given template and its associated kwargs."""
     if not template_kwargs:
         return False
@@ -33,7 +33,7 @@ def make_job_script_content(template_file, template_kwargs=None):
     env = Environment(
         loader=PackageLoader("modi_helper"), autoescape=select_autoescape()
     )
-    template = env.get_template(template_file)
+    template = env.get_template(template_name)
     new_content = template.render(
         **template_kwargs
     )  # this is where to put args to the template renderer

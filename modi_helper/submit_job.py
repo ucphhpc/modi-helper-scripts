@@ -92,7 +92,7 @@ def main(
     correct_directories = check_job_paths(scratch_space_directory, runtime_directory)
     if not correct_directories:
         print(
-            "Your `runtime-directory`: {} must reside inside the `scratch-space-directory`".format(
+            "Your `runtime-directory`: {} must reside inside the `scratch-space-directory`: {}".format(
                 runtime_directory, scratch_space_directory
             )
         )
@@ -110,16 +110,16 @@ def main(
     if generate_job_scripts:
         template_kwargs = {"job-file": job_file}
         if generate_container_wrap:
-            template_file = get_template_file(CONTAINER_WRAP)
+            template_file_name = CONTAINER_WRAP + ".j2"
             new_job_file_name = os.path.basename(job_file) + CONTAINER_WRAP
             template_kwargs["container_wrap_image"] = container_wrap_image
         else:
-            template_file = get_template_file(REGULAR)
+            template_file_name = REGULAR + ".j2"
             new_job_file_name = os.path.basename(job_file) + REGULAR
 
         new_job_file_path = os.path.join(runtime_directory, new_job_file_name)
         job_script_content = make_job_script_content(
-            template_file, template_kwargs=template_kwargs
+            template_file_name, template_kwargs=template_kwargs
         )
         wrote_job_script = write_job_script(new_job_file_path, job_script_content)
         if not wrote_job_script:
