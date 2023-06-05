@@ -20,7 +20,9 @@ def get_package_top_directory(package_name):
 # Import the template files from the src/templates directory using pkg_resources.files.
 def get_template_file(template_type):
     """Get the template file from the src/templates directory."""
-    return pkg_resources.files("templates").joinpath("{}.j2".format(template_type))
+    return pkg_resources.files("modi_helper.templates").joinpath(
+        "{}.j2".format(template_type)
+    )
 
 
 def make_job_script_content(template_file, template_kwargs=None):
@@ -31,9 +33,7 @@ def make_job_script_content(template_file, template_kwargs=None):
     env = Environment(
         loader=PackageLoader("modi-helper-scripts"),
     )
-    templateEnv = Environment(loader=templateLoader)
-    template = templateEnv.get_template(template_file)
-
+    template = env.get_template(template_file)
     new_content = template.render(
         **template_kwargs
     )  # this is where to put args to the template renderer
