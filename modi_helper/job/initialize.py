@@ -31,7 +31,7 @@ def make_job_script_content(template_file, template_kwargs=None):
         return False
 
     env = Environment(
-        loader=PackageLoader("modi-helper-scripts"),
+        loader=PackageLoader("modi-helper")
     )
     template = env.get_template(template_file)
     new_content = template.render(
