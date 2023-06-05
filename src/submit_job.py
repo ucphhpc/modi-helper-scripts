@@ -38,6 +38,7 @@ from utils.io import exists, expanduser
     "--generate-job-scripts",
     "-gjs",
     default=False,
+    is_flag=True,
     help="""
     Whether the script should generate job script files that execute the `job_file` as a job.
     """
@@ -46,6 +47,7 @@ from utils.io import exists, expanduser
     "--generate-container-wrap",
     "-gcw",
     default=False,
+    is_flag=True,
     help="""
     Whether the generate job scripts should wrap the `job_file` execution in a container environment.
     """
