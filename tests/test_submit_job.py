@@ -42,6 +42,7 @@ class TestSubmitJob(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertIn("returncode", result)
         self.assertEqual(result["returncode"], 0)
+        return super().setUp()
 
     def tearDown(self):
         if exists(self.hello_world_job_file):
@@ -53,6 +54,7 @@ class TestSubmitJob(unittest.TestCase):
             self.assertTrue(recursive_remove(self.test_runtime_directory))
         if exists(self.test_scratch_space_directory):
             self.assertTrue(recursive_remove(self.test_scratch_space_directory))
+        return super().tearDown()
 
     def test_submit_job(self):
         self.assertTrue(

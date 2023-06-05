@@ -18,8 +18,8 @@ from modi_helper.environment.create import (
     help="The directory in which the environment will be created",
 )
 @click.option(
-    "--automatic-proceed",
-    "-ap",
+    "--automatic-yes",
+    "-y",
     default=True,
     help="Whether the environment creation should automatically proceed without user input.",
 )
