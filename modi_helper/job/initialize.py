@@ -40,11 +40,9 @@ def make_job_script_content(template_name, template_kwargs=None):
     return new_content
 
 
-def write_job_script(runtime_directory, name, content):
+def write_job_script(path, content):
     """
     Generate the set of job scripts that are required to execute
     a given binary/program.
     """
-
-    job_script_path = os.path.join(runtime_directory, name)
-    return write(job_script_path, content, mode="w", mkdirs=True)
+    return write(path, content, mode="w", mkdirs=True)
