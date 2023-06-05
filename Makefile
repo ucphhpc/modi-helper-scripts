@@ -1,4 +1,4 @@
-PACKAGE_NAME=modi-helper-scripts
+PACKAGE_NAME=modi-helper
 PACKAGE_NAME_FORMATTED=$(subst -,_,$(PACKAGE_NAME))
 
 .PHONY: all init clean dist distclean maintainer-clean
