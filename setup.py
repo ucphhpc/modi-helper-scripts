@@ -28,6 +28,8 @@ setup(
     author="Rasmus Munk",
     author_email="munk1@live.dk",
     packages=find_packages(),
+    package_data={"modi_helper": ["templates/*.j2"]},
+    package_dir={"modi_helper": "modi_helper"},
     url="https://github.com/ucphhpc/modi-helper-scripts",
     keywords=[],
     install_requires=read_req("requirements.txt"),
