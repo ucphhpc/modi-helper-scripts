@@ -24,7 +24,7 @@ from modi_helper.environment.create import (
     help="Whether the environment creation should automatically proceed without user input.",
 )
 @click.option("--activate", "-a", is_flag=True, default=True, show_default=True)
-def main(name, destination_dir, automatic_proceed, activate):
+def main(name, destination_dir, automatic_yes, activate):
     if not exists(destination_dir):
         created, msg = makedirs(destination_dir)
         if not created:
@@ -38,7 +38,7 @@ def main(name, destination_dir, automatic_proceed, activate):
         exit(-2)
 
     created = create_environment(
-        name, destination=destination_dir, automatic_proceed=automatic_proceed
+        name, destination=destination_dir, auto=automatic_yes
     )
     if created["returncode"] != "0":
         print("Failed to create environment: {} - {}".format(name, created))
