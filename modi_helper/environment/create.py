@@ -2,14 +2,14 @@ import os
 from modi_helper.utils.job import run
 
 
-def create_environment(name, destination=None, automatic_proceed=False):
+def create_environment(name, destination=None, automatic_yes=False):
     command = ["conda", "create"]
     if destination:
         command.extend(["-p", os.path.join(destination, name)])
     else:
         command.extend(["-n", name])
 
-    if automatic_proceed:
+    if automatic_yes:
         command.extend(["-y"])
 
     return run(command, format_output_str=True)
