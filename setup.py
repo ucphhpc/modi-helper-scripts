@@ -38,8 +38,8 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "modi-new-job=modi_helper.submit_job:main",
-            "modi-new-environment=modi_helper.new_environment:main",
+            "modi-new-job=modi_helper.cli.job_submit:main",
+            "modi-new-environment=modi_helper.cli.environment_new:main",
         ]
     },
     classifiers=[
