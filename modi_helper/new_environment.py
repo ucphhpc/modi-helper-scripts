@@ -38,7 +38,7 @@ def main(name, destination_dir, automatic_yes, activate):
         exit(-2)
 
     created = create_environment(
-        name, destination=destination_dir, auto=automatic_yes
+        name, destination=destination_dir, automatic_yes=automatic_yes
     )
     if created["returncode"] != "0":
         print("Failed to create environment: {} - {}".format(name, created))
