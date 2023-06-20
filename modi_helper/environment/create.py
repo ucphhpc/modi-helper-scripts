@@ -18,3 +18,8 @@ def create_environment(name, destination=None, automatic_yes=False):
 def activate_environment(name):
     command = ["conda", "activate", name]
     return run(command, format_output_str=True)
+
+
+def add_environment_directory(path):
+    command = ["conda", "config", "--append", "envs_dirs", path]
+    return run(command, format_output_str=True)

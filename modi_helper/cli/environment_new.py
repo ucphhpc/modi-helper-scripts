@@ -5,6 +5,7 @@ from modi_helper.environment.initialize import initialize_conda
 from modi_helper.environment.create import (
     create_environment,
     activate_environment,
+    add_environment_directory
 )
 
 
@@ -50,6 +51,13 @@ def main(name, destination_dir, automatic_yes, activate):
             print("Failed to activate environment: {} - {}".format(name, activated))
             exit(-4)
 
+    # Ensure that the destionation directory is added as a conda environment directory
+    # This is done to ensure that the environment can be activated from anywhere
+    # in the file system by name.
+    added = add_environment_directory(destination_dir)
+    if not added:
+        print("Failed to add environment directory: {} - {}".format(name, added))
+        exit(-5)
 
 if __name__ == "__main__":
     main()
