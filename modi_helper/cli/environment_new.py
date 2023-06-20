@@ -25,7 +25,8 @@ from modi_helper.environment.create import (
     help="Whether the environment creation should automatically proceed without user input.",
 )
 @click.option("--activate", "-a", is_flag=True, default=True, show_default=True)
-def main(name, destination_dir, automatic_yes, activate):
+@click.option("--quiet", "-q", is_flag=True, default=False, show_default=True)
+def main(name, destination_dir, automatic_yes, activate, quiet):
     if not exists(destination_dir):
         created, msg = makedirs(destination_dir)
         if not created:
@@ -33,13 +34,16 @@ def main(name, destination_dir, automatic_yes, activate):
             exit(-1)
 
     # Ensure that conda is initialized
-    initialized, output = initialize_conda()
+    initialized, output = initialize_conda(quiet=quiet)
     if not initialized:
         print(output)
         exit(-2)
 
     created = create_environment(
-        name, destination=destination_dir, automatic_yes=automatic_yes
+        name,
+        destination=destination_dir,
+        automatic_yes=automatic_yes,
+        quiet=quiet,
     )
     if created["returncode"] != "0":
         print("Failed to create environment: {} - {}".format(name, created))
