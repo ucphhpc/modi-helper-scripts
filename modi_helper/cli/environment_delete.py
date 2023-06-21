@@ -13,10 +13,10 @@ from modi_helper.environment.delete import (
     "--automatic-yes",
     "-y",
     default=True,
-    help="Whether the environment creation should automatically proceed without user input.",
+    help="Whether the environment deletion should automatically proceed without user input.",
 )
 @click.option("--quiet", "-q", is_flag=True, default=False, show_default=True)
-def main(name, automatic_yes, activate, quiet):
+def main(name, automatic_yes, quiet):
     # Ensure that conda is initialized
     initialized, output = initialize_conda(quiet=quiet)
     if not initialized:
