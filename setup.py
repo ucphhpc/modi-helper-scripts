@@ -40,6 +40,7 @@ setup(
         "console_scripts": [
             "modi-new-job=modi_helper.cli.job_submit:main",
             "modi-new-environment=modi_helper.cli.environment_new:main",
+            "modi-delete-environment=modi_helper.cli.environment_delete:main",
         ]
     },
     classifiers=[

@@ -93,3 +93,12 @@ def normpath(path):
 
 def expanduser(path):
     return os.path.expanduser(path)
+
+
+def load_content(path):
+    try:
+        with open(path, "r") as fh:
+            return fh.read()
+    except IOError as err:
+        print("Failed to read file: {} - {}".format(path, err))
+    return False
