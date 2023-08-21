@@ -7,6 +7,9 @@ def create_environment(name, destination=None, automatic_yes=False, quiet=False,
         extra_conda_args = []
 
     command = ["conda", "create"]
+    if extra_conda_args:
+        command.extend(extra_conda_args)
+
     if destination:
         command.extend(["-p", os.path.join(destination, name)])
     else:
@@ -18,7 +21,6 @@ def create_environment(name, destination=None, automatic_yes=False, quiet=False,
     if quiet:
         command.extend(["-q"])
 
-    command.extend(extra_conda_args)
     return run(command, format_output_str=True)
 
 
