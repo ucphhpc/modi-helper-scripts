@@ -56,7 +56,7 @@ from modi_helper.utils.io import exists, expanduser
 @click.option(
     "--container-wrap-image",
     "-cwi",
-    default=os.getenv("MODI_DEFAULT_IMAGE", None),
+    default=os.path.join("~", "modi_images", os.getenv("MODI_DEFAULT_IMAGE", None)),
     help="""
     The container image to use when generating the job scripts.
     """,
