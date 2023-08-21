@@ -8,7 +8,8 @@ def create_environment(name, destination=None, automatic_yes=False, quiet=False,
         if isinstance(extra_conda_args, (list, tuple, set)):
             command.extend(extra_conda_args)
         elif isinstance(extra_conda_args, str):
-            command.append(extra_conda_args)
+            extra_conda_args_list = extra_conda_args.split(" ")
+            command.extend(extra_conda_args_list)
 
     if destination:
         command.extend(["-p", os.path.join(destination, name)])
