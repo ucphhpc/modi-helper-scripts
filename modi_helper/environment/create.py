@@ -3,12 +3,12 @@ from modi_helper.utils.job import run
 
 
 def create_environment(name, destination=None, automatic_yes=False, quiet=False, extra_conda_args=None):
-    if not extra_conda_args:
-        extra_conda_args = []
-
     command = ["conda", "create"]
     if extra_conda_args:
-        command.extend(extra_conda_args)
+        if isinstance(extra_conda_args, (list, tuple, set)):
+            command.extend(extra_conda_args)
+        elif isinstance(extra_conda_args, str):
+            command.append(extra_conda_args)
 
     if destination:
         command.extend(["-p", os.path.join(destination, name)])

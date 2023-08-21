@@ -28,7 +28,7 @@ from modi_helper.environment.create import (
 @click.option("--activate", "-a", is_flag=True, default=True, show_default=True)
 @click.option("--quiet", "-q", is_flag=True, default=False, show_default=True)
 # Make a click option for extra conda args
-@click.option("--extra-conda-args", multiple=True, default=[], help="Extra arguments to pass to conda")
+@click.option("--extra-conda-args", default=None, show_default=True, help="Extra arguments to pass to conda")
 def main(name, destination_dir, automatic_yes, activate, quiet, extra_conda_args):
     if not exists(destination_dir):
         created, msg = makedirs(destination_dir)
