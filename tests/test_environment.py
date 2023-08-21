@@ -18,9 +18,9 @@ class TestNewEnvironment(unittest.TestCase):
         args = [
             "modi-new-environment",
             self.new_environment_name,
-            "-d",
+            "-dd",
             TEST_RESOURCE_DIR,
-            "-y",
+            "--automatic-yes",
         ]
         result = run(args, format_output_str=True)
         assert result["output"] == ""

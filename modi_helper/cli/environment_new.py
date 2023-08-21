@@ -22,11 +22,14 @@ from modi_helper.environment.create import (
     "--automatic-yes",
     "-y",
     default=True,
+    is_flag=True,
     help="Whether the environment creation should automatically proceed without user input.",
 )
 @click.option("--activate", "-a", is_flag=True, default=True, show_default=True)
 @click.option("--quiet", "-q", is_flag=True, default=False, show_default=True)
-def main(name, destination_dir, automatic_yes, activate, quiet):
+# Make a click option for extra conda args
+@click.option("--extra-conda-args", multiple=True, default=[], help="Extra arguments to pass to conda")
+def main(name, destination_dir, automatic_yes, activate, quiet, extra_conda_args):
     if not exists(destination_dir):
         created, msg = makedirs(destination_dir)
         if not created:
@@ -44,6 +47,7 @@ def main(name, destination_dir, automatic_yes, activate, quiet):
         destination=destination_dir,
         automatic_yes=automatic_yes,
         quiet=quiet,
+        extra_conda_args=extra_conda_args
     )
     if created["returncode"] != "0":
         print("Failed to create environment: {} - {}".format(name, created))

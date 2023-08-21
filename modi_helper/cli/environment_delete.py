@@ -1,6 +1,4 @@
 import click
-import os
-from modi_helper.utils.io import exists, makedirs
 from modi_helper.environment.initialize import initialize_conda
 from modi_helper.environment.delete import (
     delete_environment
