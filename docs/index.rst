@@ -6,10 +6,9 @@
 Welcome to MODI helper scripts
 ==============================
 
-
 **Note! This documentation is currently WIP.**
 
-MODI helper scripts
+The MODI helper scripts are designed to help with managing environments and jobs within the MPI Oriented Development and Investigation service.
 
 .. toctree::
    :maxdepth: 2
