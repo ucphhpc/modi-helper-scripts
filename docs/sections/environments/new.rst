@@ -1,5 +1,5 @@
-New
-===
+Creating an Environment
+=======================
 
 To create new environments on MODI, the modi-helper-scripts provide the following CLI tool::
 

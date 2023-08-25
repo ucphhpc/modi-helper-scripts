@@ -1,5 +1,5 @@
-New Job
-=======
+Submitting a Job
+================
 
 To submit a new job in MODI, the modi-helper-scripts provide the following CLI tool::
 
@@ -29,8 +29,20 @@ To submit a new job in MODI, the modi-helper-scripts provide the following CLI t
                                         ~/modi_images/ucphhpc/hpc-notebook:22.05.9]
         -h, --help                      Show this message and exit.
 
-As is shown in the help message, the only required arguments is the path to the JOB_FILE that is to be executed.
+As is shown in the help message, the only required arguments is the path to the ``JOB_FILE`` that is to be executed.
 
 The ``--job-args`` option can be used to pass arguments to the ``JOB_FILE`` when it is executed. These arguments will be passed to the ``JOB_FILE`` as positional arguments.
 
 The ``--runtime-directory`` option can be used to specify the runtime directory in which the job is to be executed. This directory must be within the scratch space directory which is also validated at runtime.
+Furthermore, the ``JOB_FILE`` must reside inside the runtime directory when the new job is submitted.
+
+The ``--scratch-space-directory`` option can be used to specify the scratch space directory. This directory is where within the runtime directory must either be equal or reside.
+
+The ``--generate-job-scripts`` option can be used to generate job scripts that execute the ``JOB_FILE`` as a job. This is useful if the ``JOB_FILE`` is not a job script itself.
+In addition, the ``--generate-job-scripts`` can be used in conjunction with the two following arguments, to ensure that the job is executed within a specific container environment.
+
+The ``--generate-container-wrap`` option can be used to generate job scripts that wrap the ``JOB_FILE`` execution in a container environment. This is useful if the ``JOB_FILE`` is not a job script itself.
+
+The ``--container-wrap-image`` option can be used to specify the container image to use when generating the job scripts. The default is the ``ucphhpc/hpc-notebook:22.05.9`` image.
+
+
