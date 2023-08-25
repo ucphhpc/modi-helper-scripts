@@ -31,6 +31,6 @@ To submit a new job in MODI, the modi-helper-scripts provide the following CLI t
 
 As is shown in the help message, the only required arguments is the path to the JOB_FILE that is to be executed.
 
-The `--job-args` option can be used to pass arguments to the `JOB_FILE` when it is executed. These arguments will be passed to the `JOB_FILE` as positional arguments.
+The ``--job-args`` option can be used to pass arguments to the ``JOB_FILE`` when it is executed. These arguments will be passed to the ``JOB_FILE`` as positional arguments.
 
-The `--runtime-directory` option can be used to specify the runtime directory in which the job is to be executed. This directory must be within the scratch space directory.
+The ``--runtime-directory`` option can be used to specify the runtime directory in which the job is to be executed. This directory must be within the scratch space directory which is also validated at runtime.

@@ -15,3 +15,4 @@ The MODI helper scripts are designed to help with managing environments and jobs
 
    sections/getting-started/index
    sections/environments/index
+   sections/jobs/index
