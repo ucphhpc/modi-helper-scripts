@@ -14,3 +14,4 @@ The MODI helper scripts are designed to help with managing environments and jobs
    :maxdepth: 2
 
    sections/getting-started/index
+   sections/environments/index
