@@ -19,3 +19,6 @@ Or via cloning and installing it yourself::
 
 Either of these methods will install a number of CLI tools, all of which can typically be expanded in a shell environment, given that their installed
 destination directory is included in your current PATH::
+
+    $ modi-
+    modi-delete-environment  modi-new-environment     modi-new-job
