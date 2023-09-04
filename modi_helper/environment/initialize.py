@@ -11,8 +11,16 @@ def initialize_conda(quiet=False):
         )
 
     # Source the conda script into the current shell
-    command = ["conda", "init","--all"]
+    command = ["conda", "init", "--all"]
     if quiet:
         command.extend(["-q"])
+    return True, run(command, format_output_str=True)
 
+
+def get_environments(quiet=False):
+    initialized, output = initialize_conda(quiet=quiet)
+    if not initialized:
+        return None, output
+
+    command = ["conda", "config", "--get", "envs_dirs"]
     return True, run(command, format_output_str=True)
