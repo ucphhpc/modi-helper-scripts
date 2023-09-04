@@ -35,6 +35,7 @@ def main(environment_dir, quiet, extra_conda_args):
         print(environments)
         exit(-2)
 
+    print(environments)
     environments = environments["output"]
     if environment_dir not in environments:
         # Ensure that the destionation directory is added as a conda environment directory
