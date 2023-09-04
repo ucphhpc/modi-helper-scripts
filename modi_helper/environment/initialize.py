@@ -23,4 +23,4 @@ def get_environments(quiet=False):
         return None, output
 
     command = ["conda", "config", "--get", "envs_dirs"]
-    return True, run(command, format_output_str=True)
+    return True, run(command)

@@ -30,12 +30,12 @@ def main(environment_dir, quiet, extra_conda_args):
         print("The designated environment directory does not exist")
         exit(-1)
 
-    success, output = get_environments(quiet=quiet)
+    success, environments = get_environments(quiet=quiet)
     if not success:
-        print(output)
+        print(environments)
         exit(-2)
 
-    environments = output["stdout"]
+    environments = environments["output"]
     if environment_dir not in environments:
         # Ensure that the destionation directory is added as a conda environment directory
         # This is done to ensure that the environment can be activated from anywhere
