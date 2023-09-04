@@ -1,8 +1,6 @@
 import click
 from modi_helper.environment.initialize import initialize_conda
-from modi_helper.environment.delete import (
-    delete_environment
-)
+from modi_helper.environment.delete import delete_environment
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -29,6 +27,7 @@ def main(name, automatic_yes, quiet):
     if deleted["returncode"] != "0":
         print("Failed to delete environment: {} - {}".format(name, deleted))
         exit(-3)
+
 
 if __name__ == "__main__":
     main()

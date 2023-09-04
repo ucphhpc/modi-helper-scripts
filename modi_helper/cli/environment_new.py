@@ -5,7 +5,7 @@ from modi_helper.environment.initialize import initialize_conda
 from modi_helper.environment.create import (
     create_environment,
     activate_environment,
-    add_environment_directory
+    add_environment_directory,
 )
 
 
@@ -28,7 +28,12 @@ from modi_helper.environment.create import (
 @click.option("--activate", "-a", is_flag=True, default=True, show_default=True)
 @click.option("--quiet", "-q", is_flag=True, default=False, show_default=True)
 # Make a click option for extra conda args
-@click.option("--extra-conda-args", default=None, show_default=True, help="Extra arguments to pass to conda")
+@click.option(
+    "--extra-conda-args",
+    default=None,
+    show_default=True,
+    help="Extra arguments to pass to conda",
+)
 def main(name, destination_dir, automatic_yes, activate, quiet, extra_conda_args):
     if not exists(destination_dir):
         created, msg = makedirs(destination_dir)
@@ -47,7 +52,7 @@ def main(name, destination_dir, automatic_yes, activate, quiet, extra_conda_args
         destination=destination_dir,
         automatic_yes=automatic_yes,
         quiet=quiet,
-        extra_conda_args=extra_conda_args
+        extra_conda_args=extra_conda_args,
     )
     if created["returncode"] != "0":
         print("Failed to create environment: {} - {}".format(name, created))
@@ -66,6 +71,7 @@ def main(name, destination_dir, automatic_yes, activate, quiet, extra_conda_args
     if not added:
         print("Failed to add environment directory: {} - {}".format(name, added))
         exit(-5)
+
 
 if __name__ == "__main__":
     main()

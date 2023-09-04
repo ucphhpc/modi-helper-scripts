@@ -2,7 +2,9 @@ import os
 from modi_helper.utils.job import run
 
 
-def create_environment(name, destination=None, automatic_yes=False, quiet=False, extra_conda_args=None):
+def create_environment(
+    name, destination=None, automatic_yes=False, quiet=False, extra_conda_args=None
+):
     command = ["conda", "create"]
     if extra_conda_args:
         if isinstance(extra_conda_args, (list, tuple, set)):
@@ -18,7 +20,7 @@ def create_environment(name, destination=None, automatic_yes=False, quiet=False,
 
     if automatic_yes:
         command.extend(["-y"])
-    
+
     if quiet:
         command.extend(["-q"])
 
