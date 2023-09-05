@@ -42,6 +42,7 @@ setup(
             "modi-new-environment=modi_helper.cli.environment_new:main",
             "modi-delete-environment=modi_helper.cli.environment_delete:main",
             "modi-load-environments=modi_helper.cli.environments_load:main",
+            "modi-list-environments=modi_helper.cli.environments_list:main"
         ]
     },
     classifiers=[

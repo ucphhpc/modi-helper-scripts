@@ -7,4 +7,6 @@ The modi-helper-scripts enables easiser management of environments such as conda
     :maxdepth: 2
 
     new
+    load
+    list
     delete
