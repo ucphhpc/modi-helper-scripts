@@ -34,7 +34,7 @@ def extract_extra_job_settings(job_file):
 
     extra_job_settings = []
     for line in job_file_lines:
-        if line.startswith("#") and line != "#!/bin/bash":
+        if line.startswith("#SBATCH"):
             extra_job_settings.append(line)
     return extra_job_settings
 
