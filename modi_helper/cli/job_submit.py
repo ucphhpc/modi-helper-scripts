@@ -75,6 +75,10 @@ def main(
     runtime_directory = expanduser(runtime_directory)
     scratch_space_directory = expanduser(scratch_space_directory)
 
+    # Prepend the current working directory to the job file path if no subpath is specified
+    if not os.path.dirname(job_file):
+        job_file = os.path.join(os.getcwd(), job_file)
+
     if not exists(job_file):
         print(
             "Failed to find the job-file:'{}' are you sure it exists?".format(job_file)
