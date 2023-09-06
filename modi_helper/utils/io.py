@@ -102,3 +102,12 @@ def load_content(path):
     except IOError as err:
         print("Failed to read file: {} - {}".format(path, err))
     return False
+
+
+def set_execute_permissions(path):
+    try:
+        os.chmod(path, 0o755)
+        return True
+    except IOError as err:
+        print("Failed to set execute permissions on file: {} - {}".format(path, err))
+    return False

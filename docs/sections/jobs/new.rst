@@ -45,4 +45,24 @@ The ``--generate-container-wrap`` option can be used to generate job scripts tha
 
 The ``--container-wrap-image`` option can be used to specify the container image to use when generating the job scripts. The default is the ``ucphhpc/hpc-notebook:22.05.9`` image.
 
+Examples
+--------
 
+The following examples show how to a simple Hello World script as a new job in MODI.
+
+Create a simple script file, that will be your job::
+
+    ~/modi_mount/hello_world$ cat hello_world.sh
+    #!/bin/bash
+
+    echo "Hello World"
+
+Ensure that the script file is executable::
+
+    ~/modi_mount/hello_world$ chmod +x hello_world.sh
+
+Submit the script file as job::
+    ~/modi_mount/hello_world$ modi-new-job hello_world.sh 
+    Submitted batch job 1376
+
+Which will return the job id of the submitted job. The output will be produced to a standard SLURM output file in the defined ``--runtime-directory`` path.

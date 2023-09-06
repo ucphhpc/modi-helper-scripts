@@ -8,7 +8,7 @@ from modi_helper.job.initialize import (
     extract_extra_job_settings,
 )
 from modi_helper.job.run import run_job
-from modi_helper.utils.io import exists, expanduser
+from modi_helper.utils.io import exists, expanduser, set_execute_permissions
 
 
 @click.command(
@@ -84,6 +84,15 @@ def main(
             "Failed to find the job-file:'{}' are you sure it exists?".format(job_file)
         )
         exit(-1)
+    
+    if not os.access(job_file, os.X_OK):
+        print(
+            "The job-file:'{}' does not have the executable permission set.".format(job_file)
+        )
+        # Set execute permissions on the job file
+        print("Trying to set execute permissions on the job file: {}".format(job_file))
+        if not set_execute_permissions(job_file):
+            exit(-1)
 
     if not exists(runtime_directory):
         print("The specified runtime directory does not exist.")
@@ -140,6 +149,15 @@ def main(
                 "Failed to write the generated job script: {}".format(new_job_file_name)
             )
             exit(-2)
+        # Ensure the new job script has the executable permission set
+        if not set_execute_permissions(new_job_file_path):
+            print(
+                "Failed to set the execute permission on generated new job script: {}".format(
+                    new_job_file_path
+                )
+            )
+            exit(-2)
+
         job_output = run_job(runtime_directory, new_job_file_path)
     else:
         job_output = run_job(runtime_directory, job_file, *job_args)
