@@ -1,7 +1,7 @@
 import os
 from jinja2 import Environment, PackageLoader, select_autoescape
 import importlib.resources as pkg_resources
-from modi_helper.utils.io import expanduser, write
+from modi_helper.utils.io import expanduser, write, load
 
 
 def check_job_paths(runtime_directory, job_file):
@@ -23,6 +23,20 @@ def get_template_file(template_type):
     return pkg_resources.files("modi_helper.templates").joinpath(
         "{}.j2".format(template_type)
     )
+
+
+def extract_extra_job_settings(job_file):
+    """Extract the extra job settings from the given job file."""
+    if not job_file:
+        return False
+
+    job_file_lines = load(job_file, readlines=True)
+
+    extra_job_settings = []
+    for line in job_file_lines:
+        if line.startswith("#") and line != "#!/bin/bash":
+            extra_job_settings.append(line)
+    return extra_job_settings
 
 
 def make_job_script_content(template_name, template_kwargs=None):

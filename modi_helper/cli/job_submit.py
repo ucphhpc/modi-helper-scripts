@@ -5,6 +5,7 @@ from modi_helper.job.initialize import (
     check_job_paths,
     write_job_script,
     make_job_script_content,
+    extract_extra_job_settings,
 )
 from modi_helper.job.run import run_job
 from modi_helper.utils.io import exists, expanduser
@@ -117,6 +118,13 @@ def main(
         else:
             template_file_name = REGULAR + ".j2"
             new_job_file_name = "{}.{}".format(os.path.basename(job_file), REGULAR)
+
+        # Check if the original job file sets extra_job_settings
+        # If so, then we need to pass these to the new job script
+        # so that the new job script can set the same settings.
+        extra_job_settings = extract_extra_job_settings(job_file)
+        if extra_job_settings:
+            template_kwargs["extra_job_settings"] = extra_job_settings
 
         new_job_file_path = os.path.join(runtime_directory, new_job_file_name)
         job_script_content = make_job_script_content(

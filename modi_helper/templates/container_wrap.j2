@@ -1,2 +1,7 @@
 #!/bin/bash
+{% if extra_job_settings is defined %}
+{% for setting in extra_job_settings %}
+{{ setting }}
+{% endfor %}
+{% endif %}
 srun apptainer exec {{ container_wrap_image }} {{ job_file }}
