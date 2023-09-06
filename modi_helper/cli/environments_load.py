@@ -35,15 +35,17 @@ def main(environment_dir, quiet, extra_conda_args):
         print(environments)
         exit(-2)
 
-    environments = environments["output"]
-    if environment_dir not in environments:
-        # Ensure that the destionation directory is added as a conda environment directory
-        # This is done to ensure that the environment can be activated from anywhere
-        # in the file system by name.
-        added = add_environment_directory(environment_dir)
-        if not added:
-            print("Failed to add environment directory: {} - {}".format(name, added))
-            exit(-5)
+    # Ensure that the destionation directory is added as a conda environment directory
+    # This is done to ensure that the environment can be activated from anywhere
+    # in the file system by name.
+    added = add_environment_directory(environment_dir)
+    if not added:
+        print(
+            "Failed to add environment directory: {} - {}".format(
+                environment_dir, added
+            )
+        )
+        exit(-5)
 
 
 if __name__ == "__main__":
