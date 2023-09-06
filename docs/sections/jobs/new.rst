@@ -48,6 +48,9 @@ The ``--container-wrap-image`` option can be used to specify the container image
 Examples
 --------
 
+Hello World
+~~~~~~~~~~~
+
 The following examples show how to a simple Hello World script as a new job in MODI.
 
 Create a simple script file, that will be your job::
@@ -62,6 +65,7 @@ Ensure that the script file is executable::
     ~/modi_mount/hello_world$ chmod +x hello_world.sh
 
 Submit the script file as job::
+
     ~/modi_mount/hello_world$ modi-new-job hello_world.sh 
     Submitted batch job 1376
 

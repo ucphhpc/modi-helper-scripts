@@ -30,7 +30,7 @@ The ``--quiet`` argument is used to specify whether the output of conda should b
 
 The ``--extra-conda-args`` argument is used to specify extra arguments to pass to conda. It is empty by default.
 
-*Note!*
+**Note!**
 
 The created environment, and the subsequent packages installed into it will then be available to be used by the `modi-new-job` script.
 Which means that you will only have to install the packages you need once, and then you can use them in all your jobs.
