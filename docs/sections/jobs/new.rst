@@ -148,7 +148,7 @@ Hereafter, we can create an R script that will contain the code which we will wa
 
     print(v1 + v2)
 
-Now we are almost ready to submit the R script as a job. The final bit we need is to create
+Now we are almost ready to submit the R script as a job. The second to last bit is that we need is to create
 a job script file that will execute our R script::
     
         (R-env) ~/modi_mount/r_example$ cat slurm_r_job.sh
@@ -160,6 +160,10 @@ a job script file that will execute our R script::
         conda activate R-env
     
         Rscript example.R
-    
-        # Finally, we can submit the job via the ``modi-new-job`` CLI tool.
-        (R-env) ~/modi_mount/r_example$ modi-new-job --generate-job-scripts --generate-container-wrap slurm_r_job.sh
+
+Finally, we use the ``modi-new-job`` CLI tool to submit the job::
+
+    (R-env) ~/modi_mount/r_example$ modi-new-job --generate-job-scripts slurm_r_job.sh
+    Submitted batch job 1377
+
+You will then be able to find the SLURM output files in the directory in which you executed the ``modi-new-job`` CLI tool.
