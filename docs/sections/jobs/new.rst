@@ -143,23 +143,10 @@ Hereafter, we can create an R script that will contain the code which we will wa
 
     (R-env) ~/modi_mount/r_example$ cat example.R
 
-    # Get a random log-normal distribution
-    r <- rlnorm(1000)
+    v1 <- c(1,2,3,4,5,6,7,8,9,10)
+    v2 <- c(1,2,3,4,5,6,7,8,9,10)
 
-    # Get the distribution without plotting it using tighter breaks
-    h <- hist(r, plot=F, breaks=c(seq(0,max(r)+1, .1)))
-
-    # Plot the distribution using log scale on both axes, and use
-    # blue points
-    plot(h$counts, log="xy", pch=20, col="blue",
-    main="Log-normal distribution",
-    xlab="Value", ylab="Frequency")
-
-    # Define cars vector with 5 values
-    cars <- c(1, 3, 6, 4, 9)
-
-    # Create a pie chart for cars
-    pie(cars)
+    print(v1 + v2)
 
 Now we are almost ready to submit the R script as a job. The final bit we need is to create
 a job script file that will execute our R script::
