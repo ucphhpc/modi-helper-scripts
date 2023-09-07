@@ -119,4 +119,60 @@ The torch program will just be a simple tutorial example extracted from https://
     # Finally, we can submit the job via the ``modi-new-job`` CLI tool.
     (torch_cpu) ~$ conda deactivate
     ~$ modi-new-job --generate-job-scripts --generate-container-wrap slurm_torch_job.sh
+
+
+Running an R job
+~~~~~~~~~~~~~~~~
+
+The following example shows how to run a simple R script as a new job in MODI.
+
+First, create an enviornment where we will install our R packages:
     
+        ~$ modi-new-environment R-env -q
+
+Secondly, we can activate and install the required packages in our shell environment::
+    
+    ~$ conda activate R-env
+    (R-env) ~$ conda install -c conda-forge r-base r-essentials -y
+
+Next, we create a directory to put our R script in::
+
+    (R-env) ~$ mkdir ~/modi_mount/r_example && cd ~/modi_mount/r_example
+
+Hereafter, we can create an R script that will contain the code which we will want executed as a job::
+
+    (R-env) ~/modi_mount/r_example$ cat example.R
+
+    # Get a random log-normal distribution
+    r <- rlnorm(1000)
+
+    # Get the distribution without plotting it using tighter breaks
+    h <- hist(r, plot=F, breaks=c(seq(0,max(r)+1, .1)))
+
+    # Plot the distribution using log scale on both axes, and use
+    # blue points
+    plot(h$counts, log="xy", pch=20, col="blue",
+    main="Log-normal distribution",
+    xlab="Value", ylab="Frequency")
+
+    # Define cars vector with 5 values
+    cars <- c(1, 3, 6, 4, 9)
+
+    # Create a pie chart for cars
+    pie(cars)
+
+Now we are almost ready to submit the R script as a job. The final bit we need is to create
+a job script file that will execute our R script::
+    
+        (R-env) ~/modi_mount/r_example$ cat slurm_r_job.sh
+        #!/bin/bash
+    
+        # Refresh which environments are available and activate the required one
+        source $CONDA_DIR/etc/profile.d/conda.sh
+        modi-load-environments
+        conda activate R-env
+    
+        Rscript example.R
+    
+        # Finally, we can submit the job via the ``modi-new-job`` CLI tool.
+        (R-env) ~/modi_mount/r_example$ modi-new-job --generate-job-scripts --generate-container-wrap slurm_r_job.sh
