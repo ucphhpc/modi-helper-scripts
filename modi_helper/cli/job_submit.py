@@ -26,7 +26,7 @@ from modi_helper.utils.io import exists, expanduser, set_execute_permissions
 @click.option(
     "--runtime-directory",
     "-rd",
-    default=os.path.join("~", "modi_mount"),
+    default=os.getcwd(),
     help="""The path to the runtime directory in which the job is to be executed.
     This directory must be within the scratch space directory.""",
 )
@@ -93,6 +93,7 @@ def main(
         print("Trying to set execute permissions on the job file: {}".format(job_file))
         if not set_execute_permissions(job_file):
             exit(-1)
+        print("Succeeded in giving the job file: {} execute permissions.".format(job_file))
 
     if not exists(runtime_directory):
         print("The specified runtime directory does not exist.")
