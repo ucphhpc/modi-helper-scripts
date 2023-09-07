@@ -126,7 +126,7 @@ Running an R job
 
 The following example shows how to run a simple R script as a new job in MODI.
 
-First, create an enviornment where we will install our R packages:
+First, create an enviornment where we will install our R packages::
     
         ~$ modi-new-environment R-env -q
 
