@@ -69,4 +69,54 @@ Submit the script file as job::
     ~/modi_mount/hello_world$ modi-new-job hello_world.sh 
     Submitted batch job 1376
 
-Which will return the job id of the submitted job. The output will be produced to a standard SLURM output file in the defined ``--runtime-directory`` path.
+This will return the job id of the submitted job.
+The job's output will be produced/placed to a standard SLURM output file in the directory specified by the ``--runtime-directory`` argument, which by default sets it to the current working directory::
+
+    ~/modi_mount/hello_world$ cat slurm-1376.out
+    Hello World
+
+
+Job with Custom Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to submit a job within a custom conda environment, you can utilize the precreated enviorments via the ``modi-new-environment`` CLI tool.
+For instance, if we want to use torch's CPU version to accomplish some compute, we can first create an environment where we can installed the required packages::
+
+    # -q to enable quiet mode to supress some of the conda output junk
+    ~$ modi-new-environment torch_cpu -q
+
+Hereafter, we can activate and install the required packages in our shell environment::
+
+    ~$ conda activate torch_cpu
+    (torch_cpu) ~$ conda install pytorch torchvision torchaudio cpuonly -c pytorch -y
+
+After a substantial amount of time where the packages are installed, we can create the torch analysis script and the additional job file to execute it.
+The torch program will just be a simple tutorial example extracted from https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html::
+
+    # First, we create a directory to put our touch program and job file in
+    (torch_cpu) ~$ mkdir ~/torch_analysis && cd ~/torch_analysis
+
+    # Secondly, we create a torch_program.py with the mentioned content
+    (torch_cpu) ~$ cat torch_program.py
+    import torch
+    from torch import nn
+    from torch.utils.data import DataLoader
+    from torchvision import datasets
+    from torchvision.transforms import ToTensor
+    ...
+
+    # Thirdly, we create a SLURM job file that will use our created torch_cpu environemnt and execute the torch program
+    (torch_cpu) ~$ cat slurm_torch_job.sh
+    #!/bin/bash
+
+    # Refresh which environments are available and activate the required one
+    source $CONDA_DIR/etc/profile.d/conda.sh
+    modi-load-environments
+    conda activate torch_cpu
+
+    python3 torch_program.py
+
+    # Finally, we can submit the job via the ``modi-new-job`` CLI tool.
+    (torch_cpu) ~$ conda deactivate
+    ~$ modi-new-job --generate-job-scripts --generate-container-wrap slurm_torch_job.sh
+    
