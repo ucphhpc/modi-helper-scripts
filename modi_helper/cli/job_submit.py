@@ -84,16 +84,20 @@ def main(
             "Failed to find the job-file:'{}' are you sure it exists?".format(job_file)
         )
         exit(-1)
-    
+
     if not os.access(job_file, os.X_OK):
         print(
-            "The job-file:'{}' does not have the executable permission set.".format(job_file)
+            "The job-file:'{}' does not have the executable permission set.".format(
+                job_file
+            )
         )
         # Set execute permissions on the job file
         print("Trying to set execute permissions on the job file: {}".format(job_file))
         if not set_execute_permissions(job_file):
             exit(-1)
-        print("Succeeded in giving the job file: {} execute permissions.".format(job_file))
+        print(
+            "Succeeded in giving the job file: {} execute permissions.".format(job_file)
+        )
 
     if not exists(runtime_directory):
         print("The specified runtime directory does not exist.")
@@ -158,13 +162,17 @@ def main(
                 )
             )
             exit(-2)
+        job_file = new_job_file_path
 
-        job_output = run_job(runtime_directory, new_job_file_path)
-    else:
-        job_output = run_job(runtime_directory, job_file, *job_args)
-        if job_output["returncode"] != "0":
-            print("Failed to execute the job: {} - {}".format(job_file, job_output))
-            exit(-2)
+    job_output = run_job(runtime_directory, job_file, *job_args)
+    print(
+        "Your job output will be placed in the runtime directory: {}".format(
+            runtime_directory
+        )
+    )
+    if job_output["returncode"] != "0":
+        print("Failed to execute the job: {} - {}".format(job_file, job_output))
+        exit(-2)
 
 
 if __name__ == "__main__":
