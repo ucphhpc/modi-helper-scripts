@@ -163,7 +163,7 @@ a job script file that will execute our R script::
 
 Finally, we use the ``modi-new-job`` CLI tool to submit the job::
 
-    (R-env) ~/modi_mount/r_example$ modi-new-job --generate-job-scripts slurm_r_job.sh
+    (R-env) ~/modi_mount/r_example$ modi-new-job --generate-job-scripts --generate-container-wrap slurm_r_job.sh
     Submitted batch job 1377
 
 You will then be able to find the SLURM output files in the directory in which you executed the ``modi-new-job`` CLI tool.
