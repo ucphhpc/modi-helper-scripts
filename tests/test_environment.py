@@ -24,3 +24,19 @@ class TestNewEnvironment(unittest.TestCase):
         ]
         result = run(args, format_output_str=True)
         assert result["output"] == ""
+
+class TestLoadEnvironment(unittest.TestCase):
+    def setUp(self) -> None:
+        return super().setUp()
+
+    def tearDown(self) -> None:
+        return super().tearDown()
+
+    def test_load_environment(self):
+        args = [
+            "modi-load-environments",
+            "-q",
+            TEST_RESOURCE_DIR,
+        ]
+        result = run(args, format_output_str=True)
+        assert result["output"] == ""

@@ -14,10 +14,10 @@ def initialize_conda(quiet=False):
     command = ["conda", "init", "--all"]
     if quiet:
         command.extend(["-q"])
-        capture_output = False
-    else:
         capture_output = True
-    return True, run(command, format_output_str=True, capture_output=capture_output)
+    else:
+        capture_output = False
+    return True, run(command, format_output_str=False, capture_output=capture_output)
 
 
 def get_environments(quiet=False):
