@@ -36,18 +36,15 @@ def main(environment_dir, quiet, extra_conda_args):
         print(environments)
         exit(-2)
 
-    success, environment_directories = get_environment_directories()
-    if not success:
-        print(environment_directories)
-        exit(-3)
-
-    if environment_dir in environment_directories:
-        print(
-            "The environment directory: {} is already in the list of environment directories: {}".format(
-                environment_dir, environment_directories
+    found, environment_directories = get_environment_directories()
+    if found:
+        if environment_dir in environment_directories:
+            print(
+                "The environment directory: {} is already in the list of environment directories: {}".format(
+                    environment_dir, environment_directories
+                )
             )
-        )
-        exit(-4)
+            exit(-4)
 
     # Ensure that the destionation directory is added as a conda environment directory
     # This is done to ensure that the environment can be activated from anywhere
