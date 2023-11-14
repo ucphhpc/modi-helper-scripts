@@ -23,7 +23,7 @@ def get_environments(quiet=False):
         return None, output
 
     command = ["conda", "config", "--get", "envs_dirs"]
-    return True, run(command, capture_output=True)
+    return True, run(command, capture_output=quiet)
 
 
 def get_environment_directories():

@@ -26,7 +26,7 @@ from modi_helper.environment.create import (
     show_default=True,
     help="Extra arguments to pass to conda",
 )
-def main(environment_dir, quiet):
+def main(environment_dir, quiet, extra_conda_args):
     if not exists(environment_dir):
         print("The designated environment directory does not exist")
         exit(-1)

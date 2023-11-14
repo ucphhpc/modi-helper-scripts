@@ -24,7 +24,7 @@ def create_environment(
     if quiet:
         command.extend(["-q"])
 
-    return run(command, format_output_str=True)
+    return run(command, format_output_str=True, capture_output=quiet)
 
 
 def activate_environment(name):
