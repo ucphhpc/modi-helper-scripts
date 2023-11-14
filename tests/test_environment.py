@@ -25,6 +25,7 @@ class TestNewEnvironment(unittest.TestCase):
         result = run(args, format_output_str=True)
         assert result["output"] == ""
 
+
 class TestLoadEnvironment(unittest.TestCase):
     def setUp(self) -> None:
         return super().setUp()
