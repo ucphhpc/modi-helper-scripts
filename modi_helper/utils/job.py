@@ -20,8 +20,11 @@ def __format_output__(result, format_output_str=False):
 
     if format_output_str:
         for key, value in command_results.items():
-            if key == "returncode" or key == "stderr" or key == "stdout":
-                command_results[key] = str(value)
+            if key == "returncode" or key == "error" or key == "output":
+                if isinstance(value, bytes):
+                    command_results[key] = value.decode("utf-8")
+                else:
+                    command_results[key] = str(value)
     return command_results
 
 

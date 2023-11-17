@@ -19,14 +19,7 @@ from modi_helper.environment.create import (
     help="The directory in which the environments are located.",
 )
 @click.option("--quiet", "-q", is_flag=True, default=False, show_default=True)
-# Make a click option for extra conda args
-@click.option(
-    "--extra-conda-args",
-    default=None,
-    show_default=True,
-    help="Extra arguments to pass to conda",
-)
-def main(environment_dir, quiet, extra_conda_args):
+def main(environment_dir, quiet):
     if not exists(environment_dir):
         print("The designated environment directory does not exist")
         exit(-1)

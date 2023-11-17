@@ -28,7 +28,7 @@ def get_environments(quiet=False):
 
 def get_environment_directories():
     command = ["conda", "config", "--get", "envs_dirs"]
-    environment_dir_result = run(command)
+    environment_dir_result = run(command, capture_output=True, format_output_str=True)
     if not environment_dir_result:
         print(
             "Failed to get the environment directories, result: {}".format(
@@ -45,16 +45,31 @@ def get_environment_directories():
         )
         return False, []
 
-    if "output" not in environment_dir_result or not environment_dir_result["output"]:
+    if (
+        "returncode" in environment_dir_result
+        and environment_dir_result["returncode"] != "0"
+    ):
         print(
-            "Failed to get the environment directories, output: {}".format(
-                environment_dir_result
+            "Failed to get the environment directories, returncode: {}".format(
+                environment_dir_result["returncode"]
             )
         )
         return False, []
 
-    environment_lines = environment_dir_result["output"].split("\n")
+    if "output" not in environment_dir_result or not environment_dir_result["output"]:
+        print(
+            "Failed to get the environment directories, output: {}".format(
+                environment_dir_result["output"]
+            )
+        )
+        return False, []
+
+    # Ensure that no empty items are in the list
+    output_filter = filter(None, environment_dir_result["output"].split("\n"))
+    environment_lines = list(output_filter)
     environment_directories = []
     for output in environment_lines:
-        environment_directories.append(output.replace("--add envs_dirs ", "").strip())
+        environment_directories.append(
+            output.replace("--add envs_dirs ", "").replace("'", "").strip()
+        )
     return True, environment_directories
