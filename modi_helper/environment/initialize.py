@@ -1,4 +1,5 @@
 import os
+import json
 from modi_helper.utils.job import run
 
 
@@ -54,6 +55,7 @@ def get_environment_directories():
             )
         )
         return False, []
-
-    environment_directories = environment_dir_result["get"]["envs_dirs"]
+    
+    json_output = json.loads(environment_dir_result["output"])
+    environment_directories = json_output["get"]["envs_dirs"]
     return True, environment_directories

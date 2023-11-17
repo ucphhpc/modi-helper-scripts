@@ -1,4 +1,5 @@
 import os
+import json
 from modi_helper.utils.job import run
 
 
@@ -34,9 +35,10 @@ def list_environments(extra_conda_args=None):
     if "output" not in environment_results or not environment_results["output"]:
         print("Failed to list the environments, output: {}".format(environment_results))
         return False, []
-
+    
+    json_output = json.loads(environment_results["output"])
     environments = {}
-    for environment in environment_results["envs"]:
+    for environment in json_output["envs"]:
         environment_name = os.path.basename(environment)
         environments["name"] = environment_name
         environments["path"] = environment
