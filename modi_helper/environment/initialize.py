@@ -17,17 +17,8 @@ def initialize_conda(quiet=False):
     return True, run(command, format_output_str=False, capture_output=quiet)
 
 
-def get_environments(quiet=False):
-    initialized, output = initialize_conda(quiet=quiet)
-    if not initialized:
-        return None, output
-
-    command = ["conda", "config", "--get", "envs_dirs"]
-    return True, run(command, capture_output=quiet)
-
-
 def get_environment_directories():
-    command = ["conda", "config", "--get", "envs_dirs"]
+    command = ["conda", "config", "--get", "envs_dirs", "--json"]
     environment_dir_result = run(command, capture_output=True, format_output_str=True)
     if not environment_dir_result:
         print(
@@ -64,12 +55,5 @@ def get_environment_directories():
         )
         return False, []
 
-    # Ensure that no empty items are in the list
-    output_filter = filter(None, environment_dir_result["output"].split("\n"))
-    environment_lines = list(output_filter)
-    environment_directories = []
-    for output in environment_lines:
-        environment_directories.append(
-            output.replace("--add envs_dirs ", "").replace("'", "").strip()
-        )
+    environment_directories = environment_dir_result["get"]["envs_dirs"]
     return True, environment_directories

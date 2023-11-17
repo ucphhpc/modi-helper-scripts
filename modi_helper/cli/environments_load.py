@@ -2,7 +2,6 @@ import click
 import os
 from modi_helper.utils.io import exists
 from modi_helper.environment.initialize import (
-    get_environments,
     get_environment_directories,
 )
 from modi_helper.environment.create import (
@@ -23,11 +22,6 @@ def main(environment_dir, quiet):
     if not exists(environment_dir):
         print("The designated environment directory does not exist")
         exit(-1)
-
-    success, environments = get_environments(quiet=quiet)
-    if not success:
-        print(environments)
-        exit(-2)
 
     found, environment_directories = get_environment_directories()
     if found:
