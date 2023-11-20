@@ -57,5 +57,8 @@ def get_environment_directories():
         return False, []
 
     json_output = json.loads(environment_dir_result["output"])
+    if "envs_dirs" not in json_output:
+        return True, {}
+
     environment_directories = json_output["get"]["envs_dirs"]
     return True, environment_directories
