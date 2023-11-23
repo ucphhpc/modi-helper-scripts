@@ -37,9 +37,12 @@ def list_environments(extra_conda_args=None):
         return False, []
 
     json_output = json.loads(environment_results["output"])
-    environments = {}
+    environments = []
     for environment in json_output["envs"]:
+        new_environment = {}
         environment_name = os.path.basename(environment)
-        environments["name"] = environment_name
-        environments["path"] = environment
+        new_environment["name"] = environment_name
+        new_environment["path"] = environment
+        environments.append(new_environment)
+
     return True, environments
