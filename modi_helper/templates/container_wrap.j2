@@ -4,4 +4,4 @@
 {{ setting }}
 {% endfor %}
 {% endif %}
-srun apptainer exec {{ container_wrap_image }} {{ job_file }}
+{{ container_runner }} apptainer exec {{ container_wrap_image }} {{ job_file }}

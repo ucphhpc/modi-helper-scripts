@@ -62,6 +62,14 @@ from modi_helper.utils.io import exists, expanduser, set_execute_permissions
     The container image to use when generating the job scripts.
     """,
 )
+@click.option(
+    "--container-runner",
+    "-cr",
+    default="srun",
+    help="""
+    The executable that is used to execute the container image if the --generate-container-wrap is used.
+    """,
+)
 def main(
     job_file,
     job_args,
@@ -70,6 +78,7 @@ def main(
     generate_job_scripts,
     generate_container_wrap,
     container_wrap_image,
+    container_runner,
 ):
     job_file = expanduser(job_file)
     runtime_directory = expanduser(runtime_directory)
@@ -133,6 +142,7 @@ def main(
                 os.path.basename(job_file), CONTAINER_WRAP
             )
             template_kwargs["container_wrap_image"] = container_wrap_image
+            template_kwargs["container_runner"] = container_runner
         else:
             template_file_name = REGULAR + ".j2"
             new_job_file_name = "{}.{}".format(os.path.basename(job_file), REGULAR)
