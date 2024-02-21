@@ -7,6 +7,9 @@ To submit a new job in MODI, the modi-helper-scripts provide the following CLI t
         Usage: modi-new-job [OPTIONS] JOB_FILE
 
         Options:
+        -jr, --job-runner TEXT          The executable that is used to execute the
+                                        container image if the --generate-container-
+                                        wrap is used.  [default: srun]
         -ja, --job-args TEXT            The list of arguments that should be passed
                                         to the `job-file`.
         -rd, --runtime-directory TEXT   The path to the runtime directory in which
@@ -26,10 +29,12 @@ To submit a new job in MODI, the modi-helper-scripts provide the following CLI t
         -cwi, --container-wrap-image TEXT
                                         The container image to use when generating
                                         the job scripts.  [default:
-                                        ~/modi_images/ucphhpc/hpc-notebook:22.05.9]
+                                        ~/modi_images/ucphhpc/hpc-notebook:22.05.11]
         -h, --help                      Show this message and exit.
 
 As is shown in the help message, the only required arguments is the path to the ``JOB_FILE`` that is to be executed.
+
+The ``--job-runner`` option can be used to specify the executable that is used to execute the job. The option also define how a particular container image should be executed if it is paired with ``--generate-container-wrap``. The default is ``srun``.
 
 The ``--job-args`` option can be used to pass arguments to the ``JOB_FILE`` when it is executed. These arguments will be passed to the ``JOB_FILE`` as positional arguments.
 

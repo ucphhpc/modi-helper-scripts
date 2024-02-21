@@ -65,7 +65,7 @@ from modi_helper.utils.io import exists, expanduser, set_execute_permissions
 @click.option(
     "--container-wrap-image",
     "-cwi",
-    default=os.path.join("~", "modi_images", os.getenv("MODI_DEFAULT_IMAGE", None)),
+    default=os.path.join("~", "modi_images", os.getenv("MODI_DEFAULT_IMAGE", "ucphhpc/slurm-notebook:latest")),
     help="""
     The container image to use when generating the job scripts.
     """,
