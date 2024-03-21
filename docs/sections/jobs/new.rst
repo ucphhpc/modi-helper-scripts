@@ -215,6 +215,79 @@ Finally, we use the ``modi-new-job`` CLI tool to submit the job::
 You will then be able to find the SLURM output files in the directory in which you executed the ``modi-new-job`` CLI tool.
 
 
+Running an Notebook file as a job
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following example shows how to run a Jupyter Notebook file as a new job in MODI.
+
+First, create an enviornment where we will install our Jupyter and Python packages::
+
+    ~$ modi-new-environment my-jupyter-env -q
+
+Secondly, we can activate and install the required packages in our shell environment::
+    
+        ~$ conda activate my-jupyter-env
+        (my-jupyter-env) ~$ conda install jupyter -y
+
+Next, we create a directory to put our Jupyter Notebook file in::
+    
+        (my-jupyter-env) ~$ mkdir ~/modi_mount/jupyter_example && cd ~/modi_mount/jupyter_example
+    
+Hereafter, we can create a Jupyter Notebook file that will contain the code which we will want executed as a job.
+We can create this file via the JupyterLab interface in MODI inside the ~/modi_mount/jupyter_example directory.
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Contents:
+
+    notebooks/example1.ipynb
+
+After creating the Jupyter Notebook file, we can see it in the ~/modi_mount/jupyter_example directory::
+
+        my-jupyter-env) ~/modi_mount/jupyter_example$ ls -la
+        total 148
+        drwxr-xr-x  3 user_id users   4096 Mar 21 09:11 .
+        drwxr-xr-x 35 user_id users   4096 Mar 21 08:25 ..
+        drwxr-xr-x  2 user_id users   4096 Sep  8  2023 .ipynb_checkpoints
+        -rw-r--r--  1 user_id users 133720 Mar 21 09:07 notebook.ipynb
+        -rwxr-xr-x  1 user_id users    221 Sep  8  2023 slurm_jupyter_job.sh
+
+
+After coping in the Jupyter Notebook to the ~/modi_mount/jupyter_example directory, we can create a job script file that will execute our Jupyter Notebook::
+    
+        (my-jupyter-env) ~/modi_mount/jupyter_example$ cat slurm_jupyter_job.sh
+        #!/bin/bash
+    
+        # Refresh which environments are available and activate the required one
+        source $CONDA_DIR/etc/profile.d/conda.sh
+        modi-load-environments
+        conda activate my-jupyter-env
+    
+        # This will execute the given Jupyter Notebook file and produce an output Jupyter Notebook file
+        # in the directory it was executed in
+        jupyter nbconvert --execute --to notebook notebook.ipynb
+
+Finally, we use the ``modi-new-job`` CLI tool to submit the job::
+    
+        (my-jupyter-env) ~/modi_mount/jupyter_example$ modi-new-job --generate-job-scripts --generate-container-wrap slurm_jupyter_job.sh
+        Submitted batch job 1277
+
+After the job has completed, you should be able to see an output Jupyter Notebook file in the ~/modi_mount/jupyter_example directory 
+with the name ``notebook.nbconvert.ipynb``::
+
+    (my-jupyter-env) ~/modi_mount/jupyter_example$ ls -la
+    total 288
+    drwxr-xr-x  3 user_id users   4096 Mar 21 09:22 .
+    drwxr-xr-x 35 user_id users   4096 Mar 21 08:25 ..
+    drwxr-xr-x  2 user_id users   4096 Mar 21 09:19 .ipynb_checkpoints
+    -rw-r--r--  1 user_id users 133720 Mar 21 09:07 notebook.ipynb
+    -rw-r--r--  1 user_id users 135799 Mar 21 09:21 notebook.nbconvert.ipynb
+    -rwxr-xr-x  1 user_id users    238 Mar 21 09:16 slurm_jupyter_job.sh
+    -rwxr-xr-x  1 user_id users    143 Mar 21 09:19 slurm_jupyter_job.sh.container_wrap
+
+which you can then open and view the result of in the JupyterLab interface in MODI.
+
+
 Running an OpenMPI job
 ~~~~~~~~~~~~~~~~~~~~~~
 
