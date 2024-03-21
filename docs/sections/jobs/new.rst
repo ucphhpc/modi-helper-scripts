@@ -238,7 +238,7 @@ We can create this file via the JupyterLab interface in MODI inside the ~/modi_m
 
 .. toctree::
     :maxdepth: 2
-    :caption: Contents:
+    :caption: Notebook Example:
 
     notebooks/example1.ipynb
 
