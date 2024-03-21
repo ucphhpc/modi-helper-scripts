@@ -50,8 +50,7 @@ The ``--generate-container-wrap`` option can be used to generate job scripts tha
 
 The ``--container-wrap-image`` option can be used to specify the container image to use when generating the job scripts. The default is the ``ucphhpc/hpc-notebook:22.05.9`` image.
 
-Examples
---------
+The following examples show how to submit a new job in MODI.
 
 Hello World
 ~~~~~~~~~~~
