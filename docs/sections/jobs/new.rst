@@ -53,7 +53,7 @@ The ``--container-wrap-image`` option can be used to specify the container image
 The following examples show how to submit a new job in MODI.
 
 Hello World
-~~~~~~~~~~~
+-----------
 
 The following examples show how to a simple Hello World script as a new job in MODI.
 
@@ -81,7 +81,7 @@ The job's output will be produced/placed to a standard SLURM output file in the 
 
 
 Job with Custom Environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
 If you want to submit a job within a custom conda environment, you can utilize the precreated enviorments via the ``modi-new-environment`` CLI tool.
 For instance, if we want to use torch's CPU version to accomplish some compute, we can first create an environment where we can installed the required packages::
@@ -126,7 +126,7 @@ The torch program will just be a simple tutorial example extracted from https://
 
 
 Running a Python job
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 The following example shows how to run a simple Python program as a new job in MODI.
 
 First, create an enviornment where we will install our Python packages::
@@ -167,7 +167,7 @@ Finally, we use the ``modi-new-job`` CLI tool to submit the job::
 
 
 Running an R job
-~~~~~~~~~~~~~~~~
+----------------
 
 The following example shows how to run a simple R script as a new job in MODI.
 
@@ -215,7 +215,7 @@ You will then be able to find the SLURM output files in the directory in which y
 
 
 Running an Notebook file as a job
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------------
 
 The following example shows how to run a Jupyter Notebook file as a new job in MODI.
 
@@ -288,7 +288,7 @@ which you can then open and view the result of in the JupyterLab interface in MO
 
 
 Running an OpenMPI job
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 To execute an OpenMPI job via the ``modi-new-job`` CLI tool, you will need to adjust the default job runner that the tool uses to execute the job file.
 Specifically, the ``--job-runner``/``-jr`` argument must be set to the mpi command that you want to use to execute the job file.
