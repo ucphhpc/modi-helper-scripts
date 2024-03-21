@@ -214,7 +214,7 @@ Finally, we use the ``modi-new-job`` CLI tool to submit the job::
 You will then be able to find the SLURM output files in the directory in which you executed the ``modi-new-job`` CLI tool.
 
 
-Running an Notebook file as a job
+Running a Notebook file as a job
 ---------------------------------
 
 The following example shows how to run a Jupyter Notebook file as a new job in MODI.
