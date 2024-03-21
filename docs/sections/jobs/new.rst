@@ -126,6 +126,47 @@ The torch program will just be a simple tutorial example extracted from https://
     ~$ modi-new-job --generate-job-scripts --generate-container-wrap slurm_torch_job.sh
 
 
+Running a Python job
+~~~~~~~~~~~~~~~~~~~~
+The following example shows how to run a simple Python program as a new job in MODI.
+
+First, create an enviornment where we will install our Python packages::
+
+    ~$ modi-new-environment my-python-env -q
+
+Secondly, we create a directory to put our Python program and job file in::
+
+    ~$ mkdir ~/modi_mount/python_example && cd ~/modi_mount/python_example
+
+Hereafter, we can create a Python program that will contain the code which we will want executed as a job::
+
+    ~/modi_mount/python_example$ cat example.py
+    import numpy as np
+
+    a = np.array([1, 2, 3, 4, 5])
+    b = np.array([5, 4, 3, 2, 1])
+
+    print(a + b)
+
+Now we are almost ready to submit the Python program as a job. The second to last bit is that we need is to create
+a job script file that will execute our Python program::
+
+    ~/modi_mount/python_example$ cat slurm_python_job.sh
+    #!/bin/bash
+
+    # Refresh which environments are available and activate the required one
+    source $CONDA_DIR/etc/profile.d/conda.sh
+    modi-load-environments
+    conda activate my-python-env
+
+    python3 example.py
+
+Finally, we use the ``modi-new-job`` CLI tool to submit the job::
+
+    ~/modi_mount/python_example$ modi-new-job --generate-job-scripts --generate-container-wrap slurm_python_job.sh
+    Submitted batch job 1378
+
+
 Running an R job
 ~~~~~~~~~~~~~~~~
 
