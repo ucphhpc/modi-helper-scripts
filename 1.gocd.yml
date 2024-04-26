@@ -1,9 +1,3 @@
-environments:
-  pypi_package:
-    environments:
-      GIT_USER: "{{SECRET:[github][username]}}"
-    pipelines:
-      - modi-helper-scripts
 pipelines:
   modi-helper-scripts:
     group: pypi_package
@@ -21,7 +15,7 @@ pipelines:
       publish_python_git:
         git: https://github.com/rasmunk/publish-python-scripts.git
         branch: main
-        username: ${GIT_USER}
+        username: "{{SECRET:[github][username]}}"
         password: "{{SECRET:[github][access_token]}}"
         destination: publish-python-scripts
     parameters:
@@ -29,4 +23,6 @@ pipelines:
       SRC_DIRECTORY: modi-helper-scripts
       TEST_DIRECTORY: modi-helper-scripts
       PUSH_DIRECTORY: publish-python-scripts
+      PYPI_USERNAME: "{{SECRET:[modi_helper_scripts][username]}}"
+      PYPI_PASSWORD: "{{SECRET:[modi_helper_scripts][password]}}"
     template: pypi_package
