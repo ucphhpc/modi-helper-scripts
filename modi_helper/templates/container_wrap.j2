@@ -4,4 +4,4 @@
 {{ setting }}
 {% endfor %}
 {% endif %}
-{{ job_runner }} apptainer exec {{ container_wrap_image }} {{ job_file }}
+{{ job_runner }} apptainer exec {{ container_wrap_image }} {{ job_file }} {{ job_args }}

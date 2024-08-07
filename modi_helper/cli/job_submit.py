@@ -65,7 +65,11 @@ from modi_helper.utils.io import exists, expanduser, set_execute_permissions
 @click.option(
     "--container-wrap-image",
     "-cwi",
-    default=os.path.join("~", "modi_images", os.getenv("MODI_DEFAULT_IMAGE", "ucphhpc/slurm-notebook:latest")),
+    default=os.path.join(
+        "~",
+        "modi_images",
+        os.getenv("MODI_DEFAULT_IMAGE", "ucphhpc/slurm-notebook:latest"),
+    ),
     help="""
     The container image to use when generating the job scripts.
     """,
@@ -135,7 +139,12 @@ def main(
         exit(-2)
 
     if generate_job_scripts:
-        template_kwargs = {"job_runner": job_runner, "job_file": job_file}
+        # We set the jobs_args to "$@" so that the new job script can pass the arguments to the job file
+        template_kwargs = {
+            "job_runner": job_runner,
+            "job_file": job_file,
+            "job_args": "$@",
+        }
         if generate_container_wrap:
             template_file_name = CONTAINER_WRAP + ".j2"
             new_job_file_name = "{}.{}".format(
