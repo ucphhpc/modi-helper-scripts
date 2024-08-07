@@ -1,11 +1,10 @@
-PACKAGE_NAME=modi-helper
+PACKAGE_NAME=modi-helper-scripts
 PACKAGE_NAME_FORMATTED=$(subst -,_,$(PACKAGE_NAME))
 
-.PHONY: all init clean dist distclean maintainer-clean
-.PHONY: install uninstall installcheck check
-
+.PHONY: all
 all: venv install-dep init
 
+.PHONY: init
 init:
 ifeq ($(shell test -e defaults.env && echo yes), yes)
 ifneq ($(shell test -e .env && echo yes), yes)
@@ -13,49 +12,57 @@ ifneq ($(shell test -e .env && echo yes), yes)
 endif
 endif
 
-clean:
-	$(MAKE) distclean
-	$(MAKE) venv-clean
+.PHONY: clean
+clean: distclean venv-clean
 	rm -fr .env
 	rm -fr .pytest_cache
 	rm -fr tests/__pycache__
 
-dist:
+.PHONY: dist
+dist: venv
 	$(VENV)/python setup.py sdist bdist_wheel
 
+.PHONY: distclean
 distclean:
 	rm -fr dist build $(PACKAGE_NAME).egg-info $(PACKAGE_NAME_FORMATTED).egg-info
 
-maintainer-clean:
+.PHONY: maintainer-clean
+maintainer-clean: distclean
 	@echo 'This command is intended for maintainers to use; it'
 	@echo 'deletes files that may need special tools to rebuild.'
-	$(MAKE) distclean
 
-install-dev:
+.PHONY: install-dev
+install-dev: venv
 	$(VENV)/pip install -r requirements-dev.txt
 
-uninstall-dev:
+.PHONY: uninstall-dev
+uninstall-dev: venv
 	$(VENV)/pip uninstall -y -r requirements-dev.txt
 
-install-dep:
+.PHONY: install-dev
+install-dep: venv
 	$(VENV)/pip install -r requirements.txt
 
-install:
-	$(MAKE) install-dep
+.PHONY: install
+install: venv install-dep
 	$(VENV)/pip install .
 
-uninstall:
+.PHONY: uninstall
+uninstall: venv
 	$(VENV)/pip uninstall -y -r requirements.txt
 	$(VENV)/pip uninstall -y $(PACKAGE_NAME)
 
-installcheck: install
+.PHONY: installtest
+installtest: install
 	$(VENV)/pip install -r tests/requirements.txt
 
-uninstallcheck:
+.PHONY: uninstalltest
+uninstalltest: venv
 	$(VENV)/pip uninstall -y -r requirements.txt
 
 # The tests requires access to the docker socket
-check:
+.PHONY: test
+test: venv installtest
 	. $(VENV)/activate; python3 setup.py check -rms
 	. $(VENV)/activate; pytest -s -v tests/
 
