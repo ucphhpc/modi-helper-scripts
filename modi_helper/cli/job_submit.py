@@ -46,6 +46,8 @@ from modi_helper.cli.return_codes import (
     default=[],
     help="""
     The list of arguments that should be passed to the JOB_FILE.
+    If multiple arguments are to be passed, then the `--job-args` flag should be used multiple times, where each of which should contain a single argument.
+    For instance, to pass the arguments: "arg1 arg2 arg3", the following syntax should be used: --job-args arg1 --job-args arg2 --job-args arg3.
     """,
 )
 @click.option(
@@ -97,7 +99,7 @@ from modi_helper.cli.return_codes import (
     default=False,
     is_flag=True,
     help="""
-    Whether to print verbose output.
+    Whether to print verbose output about how the JOB_FILE is submitted and with what settings.
     """,
 )
 def main(
@@ -148,11 +150,19 @@ def main(
         )
 
     if not exists(runtime_directory):
-        print("The specified runtime directory does not exist.")
+        print(
+            "The specified runtime directory: '{}' does not exist.".format(
+                runtime_directory
+            )
+        )
         return PATH_NOT_FOUND
 
     if not exists(scratch_space_directory):
-        print("The specified scratch space directory does not exist.")
+        print(
+            "The specified scratch space directory: '{}' does not exist.".format(
+                scratch_space_directory
+            )
+        )
         return PATH_NOT_FOUND
 
     correct_directories = check_job_paths(
@@ -194,11 +204,11 @@ def main(
             print("Container Wrap Image: {}".format(container_wrap_image))
 
     if generate_job_scripts:
-        # We set the jobs_args to "$@" so that the new job script can pass the arguments to the JOB_FILE
+        # We need to expand the job_args to a string so that we can pass it to the template_kwargs
         template_kwargs = {
             "job_runner": job_runner,
             "job_file": job_file,
-            "job_args": "$@",
+            "job_args": " ".join(job_args),
         }
         if generate_container_wrap:
             template_file_name = CONTAINER_WRAP + ".j2"
@@ -255,7 +265,13 @@ def main(
                 job_file, job_args
             )
         )
-    job_output = run_job(runtime_directory, job_file, *job_args)
+    if generate_job_scripts:
+        # When generating job scripts, the job arguments have been passed to the template_kwargs
+        # which has generated a new job script with the job arguments.
+        # Therefore, we do not need to pass the job_args to the run_job function since it is already included in the new job script.
+        job_output = run_job(runtime_directory, job_file)
+    else:
+        job_output = run_job(runtime_directory, job_file, *job_args)
     print(
         "Your job output will be placed in the runtime directory: {}".format(
             runtime_directory
