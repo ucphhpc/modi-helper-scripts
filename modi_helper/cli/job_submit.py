@@ -1,5 +1,6 @@
 import click
 import os
+import sys
 from modi_helper.defaults import CONTAINER_WRAP, REGULAR
 from modi_helper.job.initialize import (
     check_job_paths,
@@ -8,11 +9,26 @@ from modi_helper.job.initialize import (
     extract_extra_job_settings,
 )
 from modi_helper.job.run import run_job
-from modi_helper.utils.io import exists, expanduser, set_execute_permissions
+from modi_helper.utils.io import (
+    exists,
+    expanduser,
+    set_execute_permissions,
+)
+from modi_helper.cli.return_codes import (
+    SUCCESS,
+    PATH_NOT_FOUND,
+    PERMISSIONS_ERROR,
+    SETUP_ERROR,
+    WRITE_ERROR,
+    EXECUTE_ERROR,
+)
 
 
 @click.command(
-    "cli", context_settings=dict(help_option_names=["-h", "--help"], show_default=True)
+    "cli",
+    context_settings=dict(
+        help_option_names=["-h", "--help"], show_default=True
+    ),
 )
 @click.argument("job-file")
 @click.option(
@@ -27,8 +43,9 @@ from modi_helper.utils.io import exists, expanduser, set_execute_permissions
     "--job-args",
     "-ja",
     multiple=True,
+    default=[],
     help="""
-    The list of arguments that should be passed to the `job-file`.
+    The list of arguments that should be passed to the JOB_FILE.
     """,
 )
 @click.option(
@@ -50,7 +67,7 @@ from modi_helper.utils.io import exists, expanduser, set_execute_permissions
     default=False,
     is_flag=True,
     help="""
-    Whether the script should generate job script files that execute the `job_file` as a job.
+    Whether the script should generate job script files that execute the JOB_FILE as a job.
     """,
 )
 @click.option(
@@ -59,7 +76,7 @@ from modi_helper.utils.io import exists, expanduser, set_execute_permissions
     default=False,
     is_flag=True,
     help="""
-    Whether the generate job scripts should wrap the `job_file` execution in a container environment.
+    Whether the generate job scripts should wrap the JOB_FILE execution in a container environment.
     """,
 )
 @click.option(
@@ -74,6 +91,15 @@ from modi_helper.utils.io import exists, expanduser, set_execute_permissions
     The container image to use when generating the job scripts.
     """,
 )
+@click.option(
+    "--verbose",
+    "-v",
+    default=False,
+    is_flag=True,
+    help="""
+    Whether to print verbose output.
+    """,
+)
 def main(
     job_file,
     job_runner,
@@ -83,63 +109,92 @@ def main(
     generate_job_scripts,
     generate_container_wrap,
     container_wrap_image,
+    verbose,
 ):
     job_file = expanduser(job_file)
     runtime_directory = expanduser(runtime_directory)
     scratch_space_directory = expanduser(scratch_space_directory)
 
-    # Prepend the current working directory to the job file path if no subpath is specified
+    # Prepend the current working directory to the JOB_FILE path if no subpath is specified
     if not os.path.dirname(job_file):
         job_file = os.path.join(os.getcwd(), job_file)
 
     if not exists(job_file):
         print(
-            "Failed to find the job-file:'{}' are you sure it exists?".format(job_file)
-        )
-        exit(-1)
-
-    if not os.access(job_file, os.X_OK):
-        print(
-            "The job-file:'{}' does not have the executable permission set.".format(
+            "Failed to find the JOB_FILE:'{}' are you sure it exists?".format(
                 job_file
             )
         )
-        # Set execute permissions on the job file
-        print("Trying to set execute permissions on the job file: {}".format(job_file))
-        if not set_execute_permissions(job_file):
-            exit(-1)
+        return PATH_NOT_FOUND
+
+    if not os.access(job_file, os.X_OK):
         print(
-            "Succeeded in giving the job file: {} execute permissions.".format(job_file)
+            "The JOB_FILE:'{}' does not have the executable permission set.".format(
+                job_file
+            )
+        )
+        # Set execute permissions on the JOB_FILE
+        print(
+            "Trying to set execute permissions on the JOB_FILE: {}".format(
+                job_file
+            )
+        )
+        if not set_execute_permissions(job_file):
+            return PERMISSIONS_ERROR
+        print(
+            "Succeeded in giving the JOB_FILE: {} execute permissions.".format(
+                job_file
+            )
         )
 
     if not exists(runtime_directory):
         print("The specified runtime directory does not exist.")
-        exit(-1)
+        return PATH_NOT_FOUND
 
     if not exists(scratch_space_directory):
         print("The specified scratch space directory does not exist.")
-        exit(-1)
+        return PATH_NOT_FOUND
 
-    correct_directories = check_job_paths(scratch_space_directory, runtime_directory)
+    correct_directories = check_job_paths(
+        scratch_space_directory, runtime_directory
+    )
     if not correct_directories:
         print(
             "Your `runtime-directory`: {} must reside inside the `scratch-space-directory`: {}".format(
                 runtime_directory, scratch_space_directory
             )
         )
-        exit(-2)
+        return SETUP_ERROR
 
     correct_job = check_job_paths(runtime_directory, job_file)
     if not correct_job:
         print(
-            "Your `job-file`: {} must reside inside the `runtime-directory`: {}".format(
+            "Your JOB_FILE: {} must reside inside the `runtime-directory`: {}".format(
                 job_file, runtime_directory
             )
         )
-        exit(-2)
+        return SETUP_ERROR
+
+    if verbose:
+        print(
+            "Submitting JOB_FILE: {} with the following settings".format(
+                job_file
+            )
+        )
+        print("Job Runner: {}".format(job_runner))
+        print("Job Args: {}".format(job_args))
+        print("Runtime Directory: {}".format(runtime_directory))
+        print("Scratch Space Directory: {}".format(scratch_space_directory))
+        if generate_job_scripts:
+            print("Generate Job Scripts: {}".format(generate_job_scripts))
+        if generate_container_wrap:
+            print(
+                "Generate Container Wrap: {}".format(generate_container_wrap)
+            )
+            print("Container Wrap Image: {}".format(container_wrap_image))
 
     if generate_job_scripts:
-        # We set the jobs_args to "$@" so that the new job script can pass the arguments to the job file
+        # We set the jobs_args to "$@" so that the new job script can pass the arguments to the JOB_FILE
         template_kwargs = {
             "job_runner": job_runner,
             "job_file": job_file,
@@ -153,9 +208,11 @@ def main(
             template_kwargs["container_wrap_image"] = container_wrap_image
         else:
             template_file_name = REGULAR + ".j2"
-            new_job_file_name = "{}.{}".format(os.path.basename(job_file), REGULAR)
+            new_job_file_name = "{}.{}".format(
+                os.path.basename(job_file), REGULAR
+            )
 
-        # Check if the original job file sets extra_job_settings
+        # Check if the original JOB_FILE sets extra_job_settings
         # If so, then we need to pass these to the new job script
         # so that the new job script can set the same settings.
         extra_job_settings = extract_extra_job_settings(job_file)
@@ -166,12 +223,22 @@ def main(
         job_script_content = make_job_script_content(
             template_file_name, template_kwargs=template_kwargs
         )
-        wrote_job_script = write_job_script(new_job_file_path, job_script_content)
+        wrote_job_script = write_job_script(
+            new_job_file_path, job_script_content
+        )
         if not wrote_job_script:
             print(
-                "Failed to write the generated job script: {}".format(new_job_file_name)
+                "Failed to write the generated job script: {}".format(
+                    new_job_file_name
+                )
             )
-            exit(-2)
+            return WRITE_ERROR
+        if verbose:
+            print(
+                "Successfully generated new job script: {} from template: {}".format(
+                    new_job_file_name, template_file_name
+                )
+            )
         # Ensure the new job script has the executable permission set
         if not set_execute_permissions(new_job_file_path):
             print(
@@ -179,9 +246,15 @@ def main(
                     new_job_file_path
                 )
             )
-            exit(-2)
+            return PERMISSIONS_ERROR
         job_file = new_job_file_path
 
+    if verbose:
+        print(
+            "Executing JOB_FILE: {} with the following arguments: {}".format(
+                job_file, job_args
+            )
+        )
     job_output = run_job(runtime_directory, job_file, *job_args)
     print(
         "Your job output will be placed in the runtime directory: {}".format(
@@ -189,9 +262,20 @@ def main(
         )
     )
     if job_output["returncode"] != "0":
-        print("Failed to execute the job: {} - {}".format(job_file, job_output))
-        exit(-2)
+        print(
+            "Failed to execute the JOB_FILE: {} - {}".format(
+                job_file, job_output
+            )
+        )
+        return EXECUTE_ERROR
+    if verbose:
+        print("Job executed successfully.")
+    return SUCCESS
+
+
+def cli():
+    sys.exit(main())
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

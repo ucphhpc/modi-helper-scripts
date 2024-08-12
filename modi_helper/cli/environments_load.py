@@ -1,11 +1,17 @@
 import click
 import os
+import sys
 from modi_helper.utils.io import exists
 from modi_helper.environment.initialize import (
     get_environment_directories,
 )
 from modi_helper.environment.create import (
     add_environment_directory,
+)
+from modi_helper.cli.return_codes import (
+    PATH_NOT_FOUND,
+    SUCCESS,
+    SETUP_ERROR,
 )
 
 
@@ -21,7 +27,7 @@ from modi_helper.environment.create import (
 def main(environment_dir, quiet):
     if not exists(environment_dir):
         print("The designated environment directory does not exist")
-        exit(-1)
+        return PATH_NOT_FOUND
 
     found, environment_directories = get_environment_directories()
     if found:
@@ -32,7 +38,7 @@ def main(environment_dir, quiet):
                         environment_dir, environment_directories
                     )
                 )
-            exit(0)
+            return SUCCESS
 
     # Ensure that the destionation directory is added as a conda environment directory
     # This is done to ensure that the environment can be activated from anywhere
@@ -44,8 +50,13 @@ def main(environment_dir, quiet):
                 environment_dir, added
             )
         )
-        exit(-5)
+        return SETUP_ERROR
+    return SUCCESS
+
+
+def cli():
+    sys.exit(main())
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

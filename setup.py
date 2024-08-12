@@ -38,11 +38,11 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "modi-new-job=modi_helper.cli.job_submit:main",
-            "modi-new-environment=modi_helper.cli.environment_new:main",
-            "modi-delete-environment=modi_helper.cli.environment_delete:main",
-            "modi-load-environments=modi_helper.cli.environments_load:main",
-            "modi-list-environments=modi_helper.cli.environments_list:main",
+            "modi-new-job=modi_helper.cli.job_submit:cli",
+            "modi-new-environment=modi_helper.cli.environment_new:cli",
+            "modi-delete-environment=modi_helper.cli.environment_delete:cli",
+            "modi-load-environments=modi_helper.cli.environments_load:cli",
+            "modi-list-environments=modi_helper.cli.environments_list:cli",
         ]
     },
     classifiers=[

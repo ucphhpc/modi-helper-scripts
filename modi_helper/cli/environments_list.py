@@ -1,6 +1,12 @@
 import click
+import sys
 from modi_helper.environment.initialize import initialize_conda
 from modi_helper.environment.list import list_environments
+from modi_helper.cli.return_codes import (
+    SUCCESS,
+    EXECUTE_ERROR,
+    SETUP_ERROR,
+)
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -16,10 +22,21 @@ def main(extra_conda_args):
     initialized, output = initialize_conda(quiet=True)
     if not initialized:
         print(output)
-        exit(-2)
+        return SETUP_ERROR
 
-    success, environments = list_environments(extra_conda_args=extra_conda_args)
+    success, environments = list_environments(
+        extra_conda_args=extra_conda_args
+    )
     if not success:
         print("Failed to list environments")
-        exit(-1)
+        return EXECUTE_ERROR
     print(environments)
+    return SUCCESS
+
+
+def cli():
+    sys.exit(main())
+
+
+if __name__ == "__main__":
+    sys.exit(main())

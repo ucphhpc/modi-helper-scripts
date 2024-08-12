@@ -3,7 +3,11 @@ from modi_helper.utils.job import run
 
 
 def create_environment(
-    name, destination=None, automatic_yes=False, quiet=False, extra_conda_args=None
+    name,
+    destination=None,
+    automatic_yes=False,
+    quiet=False,
+    extra_conda_args=None,
 ):
     command = ["conda", "create"]
     if extra_conda_args:

@@ -45,7 +45,8 @@ def make_job_script_content(template_name, template_kwargs=None):
         return False
 
     env = Environment(
-        loader=PackageLoader("modi_helper"), autoescape=select_autoescape()
+        loader=PackageLoader("modi_helper"),
+        autoescape=select_autoescape(),
     )
     template = env.get_template(template_name)
     new_content = template.render(

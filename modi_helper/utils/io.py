@@ -7,7 +7,10 @@ def makedirs(path):
         os.makedirs(expanduser(path))
         return True, "Created: {}".format(path)
     except IOError as err:
-        return False, "Failed to create the directory path: {} - {}".format(path, err)
+        return (
+            False,
+            "Failed to create the directory path: {} - {}".format(path, err),
+        )
 
 
 def write(path, content, mode="w", mkdirs=False):
@@ -38,7 +41,9 @@ def copy_recursive(source_directory, destination_directory):
         shutil.copytree(source_directory, destination_directory)
         return True
     except IOError as err:
-        print("Failed to copy directory: {} - {}".format(source_directory, err))
+        print(
+            "Failed to copy directory: {} - {}".format(source_directory, err)
+        )
     return False
 
 
@@ -109,5 +114,9 @@ def set_execute_permissions(path):
         os.chmod(path, 0o755)
         return True
     except IOError as err:
-        print("Failed to set execute permissions on file: {} - {}".format(path, err))
+        print(
+            "Failed to set execute permissions on file: {} - {}".format(
+                path, err
+            )
+        )
     return False

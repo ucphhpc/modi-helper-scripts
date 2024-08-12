@@ -4,7 +4,9 @@ import subprocess
 def __format_output__(result, format_output_str=False):
     command_results = {}
     if hasattr(result, "args"):
-        command_results.update({"command": " ".join((getattr(result, "args")))})
+        command_results.update(
+            {"command": " ".join((getattr(result, "args")))}
+        )
     if hasattr(result, "returncode"):
         command_results.update({"returncode": getattr(result, "returncode")})
     if hasattr(result, "stderr"):

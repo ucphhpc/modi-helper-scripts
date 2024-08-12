@@ -12,7 +12,9 @@ def list_environments(extra_conda_args=None):
             extra_conda_args_list = extra_conda_args.split(" ")
             command.extend(extra_conda_args_list)
 
-    environment_results = run(command, format_output_str=True, capture_output=True)
+    environment_results = run(
+        command, format_output_str=True, capture_output=True
+    )
     if not environment_results:
         return False, []
 
@@ -24,7 +26,10 @@ def list_environments(extra_conda_args=None):
         )
         return False, []
 
-    if "returncode" in environment_results and environment_results["returncode"] != "0":
+    if (
+        "returncode" in environment_results
+        and environment_results["returncode"] != "0"
+    ):
         print(
             "Failed to list the environments, returncode: {}".format(
                 environment_results["returncode"]
@@ -32,8 +37,15 @@ def list_environments(extra_conda_args=None):
         )
         return False, []
 
-    if "output" not in environment_results or not environment_results["output"]:
-        print("Failed to list the environments, output: {}".format(environment_results))
+    if (
+        "output" not in environment_results
+        or not environment_results["output"]
+    ):
+        print(
+            "Failed to list the environments, output: {}".format(
+                environment_results
+            )
+        )
         return False, []
 
     json_output = json.loads(environment_results["output"])
