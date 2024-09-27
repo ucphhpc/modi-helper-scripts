@@ -80,6 +80,28 @@ The job's output will be produced/placed to a standard SLURM output file in the 
     Hello World
 
 
+Selecting a MODI SLURM partition
+--------------------------------
+
+By default, the a job submission on MODI will use the default ``modi_devel`` partition.
+If you want to submit a job to a different partition, you can set the ``#SBATCH --partition <partition_name>`` directive in the job file.
+
+For instance, if you want to submit a job to the ``modi_short`` partition, you can create a job file with the following content::
+
+    ~/modi_mount/hello_world$ cat hello_world_partition.sh
+    #!/bin/bash
+    #SBATCH --partition modi_short
+
+    # Sleep such that you have time to check the queue for its partition
+    sleep 15
+    echo "Hello World"
+
+After this has been set, you can submit the job as usual::
+
+    ~/modi_mount/hello_world$ modi-new-job hello_world_partition.sh
+    Submitted batch job 1377
+
+
 Job with Custom Environment
 ---------------------------
 
