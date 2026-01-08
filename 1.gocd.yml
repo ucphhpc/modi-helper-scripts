@@ -28,9 +28,8 @@ pipelines:
         destination: publish-python-scripts
     parameters:
       SRC_DIRECTORY: modi-helper-scripts
-      BUILD_ARGS: install
+      BUILD_MAKE_ARGS: install
       TEST_DIRECTORY: modi-helper-scripts
-      TEST_ARGS: ''
-      TEST_MAKE_TARGET: test
+      TEST_MAKE_ARGS: test
       PUSH_DIRECTORY: publish-python-scripts
     template: pypi_package
