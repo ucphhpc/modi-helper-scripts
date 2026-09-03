@@ -1,6 +1,7 @@
 environments:
   modi_helper_scripts:
     environment_variables:
+      GIT_TERMINAL_PROMPT: 0
       GIT_USER: "{{SECRET:[github][username]}}"
       PYPI_USERNAME: "{{SECRET:[modi_helper_scripts][username]}}"
       PYPI_PASSWORD: "{{SECRET:[modi_helper_scripts][password]}}"
